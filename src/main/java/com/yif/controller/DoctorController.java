@@ -6,6 +6,8 @@ package com.yif.controller;
 
 import com.yif.entity.Doctor;
 import com.yif.service.IDoctorService;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@Slf4j
+@Api(tags = "Api-Doctor")
 public class DoctorController {
 
     @Autowired
     private IDoctorService doctorService;
 
+    /**
+     * 查找所有医生
+     * @param model
+     * @return
+     */
     @RequestMapping("/getDoctors")
     public String getDoctors(Model model) {
         List<Doctor> doctors = doctorService.readDoctors();
@@ -28,17 +37,16 @@ public class DoctorController {
         return "index";
     }
 
+    /**
+     * 根据id查找对应的医生
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("/findDoctorById")
     public String findDoctorById(Model model,@RequestParam String id) {
         List<Doctor> doctors = doctorService.findDoctorById(id);
         model.addAttribute("doctors",doctors);
         return "index";
     }
-
-//    @GetMapping("/testHutu")
-//    public void readAll() {
-//        ExcelReader reader = ExcelUtil.getReader("C:/Users/admin/Desktop/Api/医师节数据样例.xlsx");
-//        List<List<Object>> readAll = reader.read();
-//        System.out.println(readAll);
-//    }
 }

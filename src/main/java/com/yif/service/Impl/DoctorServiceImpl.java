@@ -96,7 +96,6 @@ public class DoctorServiceImpl implements IDoctorService {
                 if (doctorList.size() == 0) {
                     log.info("该企业账号:"+ id +",查无此人");
                 }
-
             }
         }).build();
         // 创建sheet对象,并读取Excel的第1个sheet(下标从0开始)

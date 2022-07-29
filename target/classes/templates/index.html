@@ -9,65 +9,108 @@
 <body>
     <h2 class="index-f-head" style="text-align: center"> 医师节活动 <span>查询医生信息</span> </h2>
 
-    <form action="http://localhost:8080/findDoctorById" method="get">
-        企业账号:<input type="text" name="id" placeholder="请输入你的企业账号">
-        <input type="submit" value="查询">
-        <input type="reset" value="重置">
-    </form>
-    <br>
-    <input type="reset" value="清空数据" onclick="resetAll()">
-    <input type="button" value="查询全部" onclick="queryAll()"> <br><br><br>
-    <div class="index-f-body" style="text-align: center">
-        <table style="border-width: 1px;border-style: solid;width: 100% ">
-            <tr>
-                <td>姓名</td>
-                <td>企业账号</td>
-                <td>身份</td>
-                <td>门诊就诊量</td>
-                <td>看诊最多日期</td>
-                <td>看诊最多日看诊量</td>
-                <td>住院患者治疗量</td>
-                <td>手术量</td>
-                <td>手术总时长</td>
-                <td>手术最多搭档</td>
-                <td>手术时长最长时间</td>
-                <td>手术最长结束时间</td>
-                <td>医生生日</td>
-                <td>生日当天看诊量</td>
-                <td>生日当天手术量</td>
-                <td>线上诊疗人次（互联网门诊）</td>
-            </tr>
+    <div class="form-all" >
+        <form action="http://localhost:8080/findDoctorById" class="form" method="get" style="text-align: center">
+            企业账号:<input type="text" name="id" id="inputValue" placeholder="请输入你的企业账号">
+            <input type="submit" value="查询">
+            <input type="reset" value="重置">
+            <br><br>
+            <input type="reset" value="清空数据" onclick="resetAll()">
+            <input type="button" value="查询全部" onclick="queryAll()">
+            <input class="msg" type="button" value="发送消息" onclick="sendMsg()">
+        </form>
 
-            <div th:each="doctor : ${doctors}" style="align-items: center">
-                <tr>
-                    <td th:text="${doctor.name}"></td>
-                    <td th:text="${doctor.id}"></td>
-                    <td th:text="${doctor.identity}"></td>
-                    <td th:text="${doctor.visits}"></td>
-                    <td th:text="${doctor.maxVisitDate}"></td>
-                    <td th:text="${doctor.maxVisit}"></td>
-                    <td th:text="${doctor.healing}"></td>
-                    <td th:text="${doctor.operation}"></td>
-                    <td th:text="${doctor.timeOperations}"></td>
-                    <td th:text="${doctor.partner}"></td>
-                    <td th:text="${doctor.maxTimeOperations}"></td>
-                    <td th:text="${doctor.latestTimeOperations}"></td>
-                    <td th:text="${doctor.birthDate}"></td>
-                    <td th:text="${doctor.birthVisits}"></td>
-                    <td th:text="${doctor.birthOperations}"></td>
-                    <td th:text="${doctor.onlineVisits}"></td>
-                </tr>
-            </div>
-        </table>
+
     </div>
 
+
+
+
+        <div class="index-f-body" style="text-align: center">
+            <table style="border-width: 1px;border-style: solid;width: 100% ">
+                <tr>
+                    <td>姓名</td>
+                    <td>企业账号</td>
+                    <td>身份</td>
+                    <td>门诊就诊量</td>
+                    <td>看诊最多日期</td>
+                    <td>看诊最多日看诊量</td>
+                    <td>住院患者治疗量</td>
+                    <td>手术量</td>
+                    <td>手术总时长</td>
+                    <td>手术最多搭档</td>
+                    <td>手术时长最长时间</td>
+                    <td>手术最长结束时间</td>
+                    <td>医生生日</td>
+                    <td>生日当天看诊量</td>
+                    <td>生日当天手术量</td>
+                    <td>线上诊疗人次（互联网门诊）</td>
+                </tr>
+
+                <div th:each="doctor : ${doctors}" style="align-items: center">
+                    <tr>
+                        <td th:text="${doctor.name}"></td>
+                        <td th:text="${doctor.id}"></td>
+                        <td th:text="${doctor.identity}"></td>
+                        <td th:text="${doctor.visits}"></td>
+                        <td th:text="${doctor.maxVisitDate}"></td>
+                        <td th:text="${doctor.maxVisit}"></td>
+                        <td th:text="${doctor.healing}"></td>
+                        <td th:text="${doctor.operation}"></td>
+                        <td th:text="${doctor.timeOperations}"></td>
+                        <td th:text="${doctor.partner}"></td>
+                        <td th:text="${doctor.maxTimeOperations}"></td>
+                        <td th:text="${doctor.latestTimeOperations}"></td>
+                        <td th:text="${doctor.birthDate}"></td>
+                        <td th:text="${doctor.birthVisits}"></td>
+                        <td th:text="${doctor.birthOperations}"></td>
+                        <td th:text="${doctor.onlineVisits}"></td>
+                    </tr>
+                </div>
+            </table>
+    </div>
 </body>
+
 <script>
     function resetAll() {
         window.location.href = 'http://localhost:8080/findDoctorById?id'
     }
-    function queryAll(){
+    function queryAll() {
         window.location.href = 'http://localhost:8080/getDoctors'
     }
+    function sendMsg() {
+        const temp = $('#inputValue').val();
+        console.log(temp);
+        window.location.href = 'http://localhost:8080/findDoctorById?id='+temp;
+    }
 </script>
+
+<style>
+    .form-all{
+        position: fixed;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+    }
+    .form {
+        position: absolute;
+        width: 400px;
+        top: 2%;
+        left: 0;
+        right: 0;
+        border: gray 1px solid;
+        margin: 0px auto;
+        padding: 20px;
+    }
+    .index-f-body{
+        position: absolute;
+        top: 25%;
+        text-align: center;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+    .msg {
+    }
+</style>
 </html>
