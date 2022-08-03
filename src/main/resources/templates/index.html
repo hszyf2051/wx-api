@@ -1,116 +1,87 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>循环遍历获取医生信息</title>
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1 ,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../static/css/jquery.fullPage.css" th:href="@{/css/jquery.fullPage.css}" />
+		<link rel="stylesheet" type="text/css" href="../static/css/animate.css" th:href="@{/css/animate.css}"/>
+		<link rel="stylesheet" type="text/css" href="../static/css/index.css" th:href="@{/css/index.css}"/>
+		<script src="../static/js/jquery-3.6.0.js" th:src="@{/js/jquery-3.6.0.js}" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/js/jquery.fullPage.js" th:src="@{js/jquery.fullPage.js}" type="text/javascript" charset="utf-8"></script>
+		<title>南京妇幼</title>
+		<script type="text/javascript">
+			document.documentElement.style.fontSize = document.documentElement.clientWidth / 750*16 + 'px';			
+		</script>
+	</head>
+	<body>
+		<div id="dowebok">
+			<div class="section active">
+				<div class="page01-bg01"></div>
+				<div class="page01-bg02 animated"></div>
+				<div class="page01-bottom">
+					<div class="page01-title animated" th:each="doctor : ${doctors}">
+						<p>一年来，</p>
+						<p th:text="${doctor.name}"></p>
+						<p>您共接诊线上诊疗<span  class="timer" th:data-to="${doctor.visits}" th:data-speed="2000"></span>人次，</p>
+						<p>感谢您让冰冷的屏幕更有温度！</p>
+					</div>	
+				</div>
+				<div class="page-down">
+					<img src="../static/images/page01-i01.png" th:src="@{/images/page01-i01.png}"/>
+					<img src="../static/images/page01-i02.png" th:src="@{/images/page01-i02.png}"/>
+				</div>
+			</div>
+			<div class="section hotel">
+				第二屏
+			</div>
+			<div class="section join">
+				第三屏
+			</div>
+			<!--<div class="section footer fp-auto-height">
+				4		
+			</div>-->
+		</div>
+	</body>
+	<script src="../static/js/timepeople.js"  th:src="@{/js/timepeople.js}" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$(function(){
+			setTimeout(function () {
+				$('.page01-bg02').addClass("fadeInLeft");
+			}, 500);
+			setTimeout(function () {
+				$('.page01-title').addClass("fadeInUp");
+				$('.timer').each(count);
+			}, 1000);
+			
+			$('#dowebok').fullpage({
+				verticalCentered: false,
+				navigation: false,
+				scrollingSpeed: 1000,
+		        easing: 'easeInOutCubic',
+		        easingcss3: 'ease',
+		        onLeave: function(anchorLink, index){
+					if(index == 1){
+						setTimeout(function () {
+							$('.page01-bg02').addClass("fadeInLeft");
+						}, 500);
+						setTimeout(function () {
+							$('.page01-title').addClass("fadeInUp");
+							$('.timer').each(count);
+						}, 1000);
+					}
+					if(index == 2){
+						setTimeout(function () {
+							$('.page01-bg02').removeClass("fadeInLeft");
+						}, 500);
+						setTimeout(function () { 
+							$('.page01-title').removeClass("fadeInUp");
+						}, 1000);
+					}
+					if(index == 3){
 
-<body>
-    <h2 class="index-f-head" style="text-align: center"> 医师节活动 <span>查询医生信息</span> </h2>
-
-    <div class="form-all" >
-        <form action="http://localhost:8080/findDoctorById" class="form" method="get" style="text-align: center">
-            企业账号:<input type="text" name="id" id="inputValue" placeholder="请输入你的企业账号">
-            <input type="submit" value="查询">
-            <input type="reset" value="重置">
-            <br><br>
-            <input type="reset" value="清空数据" onclick="resetAll()">
-            <input type="button" value="查询全部" onclick="queryAll()">
-            <input class="msg" type="button" value="发送消息" onclick="sendMsg()">
-        </form>
-
-
-    </div>
-
-
-
-
-        <div class="index-f-body" style="text-align: center">
-            <table style="border-width: 1px;border-style: solid;width: 100% ">
-                <tr>
-                    <td>姓名</td>
-                    <td>企业账号</td>
-                    <td>身份</td>
-                    <td>门诊就诊量</td>
-                    <td>看诊最多日期</td>
-                    <td>看诊最多日看诊量</td>
-                    <td>住院患者治疗量</td>
-                    <td>手术量</td>
-                    <td>手术总时长</td>
-                    <td>手术最多搭档</td>
-                    <td>手术时长最长时间</td>
-                    <td>手术最长结束时间</td>
-                    <td>医生生日</td>
-                    <td>生日当天看诊量</td>
-                    <td>生日当天手术量</td>
-                    <td>线上诊疗人次（互联网门诊）</td>
-                </tr>
-
-                <div th:each="doctor : ${doctors}" style="align-items: center">
-                    <tr>
-                        <td th:text="${doctor.name}"></td>
-                        <td th:text="${doctor.id}"></td>
-                        <td th:text="${doctor.identity}"></td>
-                        <td th:text="${doctor.visits}"></td>
-                        <td th:text="${doctor.maxVisitDate}"></td>
-                        <td th:text="${doctor.maxVisit}"></td>
-                        <td th:text="${doctor.healing}"></td>
-                        <td th:text="${doctor.operation}"></td>
-                        <td th:text="${doctor.timeOperations}"></td>
-                        <td th:text="${doctor.partner}"></td>
-                        <td th:text="${doctor.maxTimeOperations}"></td>
-                        <td th:text="${doctor.latestTimeOperations}"></td>
-                        <td th:text="${doctor.birthDate}"></td>
-                        <td th:text="${doctor.birthVisits}"></td>
-                        <td th:text="${doctor.birthOperations}"></td>
-                        <td th:text="${doctor.onlineVisits}"></td>
-                    </tr>
-                </div>
-            </table>
-    </div>
-</body>
-
-<script>
-    function resetAll() {
-        window.location.href = 'http://localhost:8080/findDoctorById?id'
-    }
-    function queryAll() {
-        window.location.href = 'http://localhost:8080/getDoctors'
-    }
-    function sendMsg() {
-        const temp = $('#inputValue').val();
-        console.log(temp);
-        window.location.href = 'http://localhost:8080/findDoctorById?id='+temp;
-    }
-</script>
-
-<style>
-    .form-all{
-        position: fixed;
-        text-align: center;
-        width: 100%;
-        height: 100%;
-    }
-    .form {
-        position: absolute;
-        width: 400px;
-        top: 2%;
-        left: 0;
-        right: 0;
-        border: gray 1px solid;
-        margin: 0px auto;
-        padding: 20px;
-    }
-    .index-f-body{
-        position: absolute;
-        top: 25%;
-        text-align: center;
-        left: 0;
-        right: 0;
-        width: 100%;
-    }
-    .msg {
-    }
-</style>
+					}
+				},
+			});
+		});
+	</script>
 </html>
