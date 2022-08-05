@@ -5,14 +5,19 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.yif.entity.Doctor;
 import com.yif.service.IDoctorService;
+import com.yif.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author admin
@@ -20,6 +25,25 @@ import java.util.List;
 @Slf4j
 @Service
 public class DoctorServiceImpl implements IDoctorService {
+    @Value("${doctor.jpgurl}")
+    private String jpgurl;
+
+    /**
+     * 获取企业token
+     * @param corpid
+     * @param corpsecret
+     * @return
+     */
+    @Override
+    public String getToken(String corpid, String corpsecret) {
+        Map map = new HashMap();
+        map.put("corpid",corpid);
+        map.put("corpsecret",corpsecret);
+        String s = HttpUtil.httpGet("https://qyapi.weixin.qq.com/cgi-bin/gettoken", null, map);
+        JSONObject jsonObject = JSON.parseObject(s);
+        String access_token = jsonObject.getString("access_token");
+        return access_token;
+    }
 
     /**
      * 从yml中读取文件路径
@@ -46,7 +70,7 @@ public class DoctorServiceImpl implements IDoctorService {
                 }
                 if (doctor.getBirthVisits() == null) {
                     // 生日当天看诊量
-                    doctor.setBirthVisits(0);
+                    doctor.setBirthVisits(0);   
                 }
                 doctorList.add(doctor);
             }
@@ -65,6 +89,11 @@ public class DoctorServiceImpl implements IDoctorService {
 
     }
 
+    /**
+     * 根据id查找指定人信息
+     * @param id
+     * @return
+     */
     @Override
     public List<Doctor> findDoctorById(String id) {
         // 创建一个数据格式来承装读取到数据
@@ -105,5 +134,37 @@ public class DoctorServiceImpl implements IDoctorService {
         excelReader.finish();
         log.info(String.valueOf(doctorList));
         return doctorList;
+    }
+
+    /**
+     * 发送图文消息
+     * @param token
+     * @param id
+     * @return
+     */
+    @Override
+    public String sendMsg(String token,String id) {
+        // 参数
+        Map<String, Object> paramMap = new HashMap<>();
+        // 图文内容
+        Map newsMap = new HashMap();
+        // 发送图文的api中articles的类型是数组
+        ArrayList<Object> arrayList = new ArrayList<>();
+        Map articlesMap = new HashMap();
+        articlesMap.put("title","医生节活动");
+        articlesMap.put("description","救死扶伤，大爱无疆");
+        articlesMap.put("url","http://192.168.3.216:8181/findDoctorById?id="+id);
+        articlesMap.put("picurl",jpgurl);
+        arrayList.add(articlesMap);
+        paramMap.put("touser",id);
+        paramMap.put("msgtype", "news");
+//        paramMap.put("toparty", 3);
+        paramMap.put("agentid", 2);
+        paramMap.put("news", newsMap);
+        newsMap.put("articles", arrayList);
+
+        String jsonObject = String.valueOf(new JSONObject(paramMap));
+        String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
+        return httpPost;
     }
 }

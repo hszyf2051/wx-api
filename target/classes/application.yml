@@ -25,5 +25,8 @@ spring:
 
 doctor:
   fileName: "C:\\\\Users\\\\admin\\\\Desktop\\\\Api\\\\医师节数据样例.xlsx"
+  corpid: wx1199888fb72190c9
+  corpsecret: oUCu-DxjBNMgkT7ltCqSos7SvYOeV32beRK0SXmLjcs
+  jpgUrl: https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F4fdf8a7e48d506a45758b57eb8dcb0ce747baec8.jpg&refer=http%3A%2F%2Fi0.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662260067&t=ae7d84f3241dafb0c97d9859cdc979f9
 User:
   fileName: "C:\\\\Users\\\\admin\\\\Desktop\\\\Api\\\\魔梵研发组.xlsx"
