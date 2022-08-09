@@ -14,10 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +34,9 @@ public class DoctorController {
 
     @Value("${doctor.corpsecret}")
     private String corpsecret;
+
+    @Value("${doctor.redirect_uri}")
+    private String url;
 
     @Autowired
     private IDoctorService doctorService;
@@ -106,5 +113,18 @@ public class DoctorController {
             String id = doctor.getId();
             this.sendMsg(id);
         }
+    }
+
+    @RequestMapping("/accessUser")
+    @ApiOperation("访问用户权限")
+    public void accessUser(HttpServletResponse response) throws IOException {
+        String redirect_uri = URLEncoder.encode(url, "UTF-8");
+        String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                "appid=APPID" +
+                "&redirect_uri=REDIRECT_URI"+
+                "&response_type=code" +
+                "&scope=SCOPE" +
+                "&state=123#wechat_redirect";
+        response.sendRedirect(wxUrl.replace("APPID",corpid).replace("REDIRECT_URI",redirect_uri).replace("SCOPE","snsapi_userinfo"));
     }
 }

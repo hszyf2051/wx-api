@@ -27,4 +27,9 @@ public interface IDoctorService {
      * @return
      */
     public String sendMsg(String token,String id);
+
+    /**
+     * 获取用户授权
+     */
+    String accessUser();
 }

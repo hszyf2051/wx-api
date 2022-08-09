@@ -21,8 +21,8 @@
 				<div class="page01-bottom">
 					<div class="page01-title animated" th:each="doctor : ${doctors}">
 						<p>一年来，</p>
-						<p th:text="${doctor.name}"></p>
-						<p>您共接诊线上诊疗<span  class="timer" th:data-to="${doctor.visits}" th:data-speed="2000"></span>人次，</p>
+						<p th:if="${doctor.name!=null}"><span th:text="${doctor.name}"></span></p>
+						<p th:if="${doctor.visits}!=null">您共接诊线上诊疗<span  class="timer" th:data-to="${doctor.visits}" th:data-speed="2000"></span>人次，</p>
 						<p>感谢您让冰冷的屏幕更有温度！</p>
 					</div>	
 				</div>

@@ -28,6 +28,18 @@ public class DoctorServiceImpl implements IDoctorService {
     @Value("${doctor.jpgurl}")
     private String jpgurl;
 
+    @Value("${doctor.redirect_uri}")
+    private String url;
+
+    @Value("${doctor.corpid}")
+    private String appid;
+
+    @Value("${doctor.scope}")
+    private String scope;
+
+    @Value("${doctor.agentid}")
+    private String agentid;
+
     /**
      * 获取企业token
      * @param corpid
@@ -167,4 +179,22 @@ public class DoctorServiceImpl implements IDoctorService {
         String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
         return httpPost;
     }
+
+    @Override
+    public String accessUser() {
+        return null;
+    }
+
+//    @Override
+//    public String accessUser(HttpServletResponse response)throws IOException {
+//        String urlencoder = URLEncoder.encode(url,"UTF-8");
+//        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+//                "appid=APPID" +
+//                "&redirect_uri=REDIRECT_URI"+
+//                "&response_type=code" +
+//                "&scope=SCOPE" +
+//                "&state=123#wechat_redirect";
+//
+//        return httpPost;
+//    }
 }
