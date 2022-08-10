@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,18 +74,18 @@ public class DoctorServiceImpl implements IDoctorService {
         ExcelReader excelReader = EasyExcel.read(fileName, head, new AnalysisEventListener<Doctor>() {
             @Override
             public void invoke(Doctor doctor, AnalysisContext analysisContext) {
-                if (doctor.getHealing() == null) {
-                    // 住院患者治疗量
-                    doctor.setHealing(0);
-                }
-                if (doctor.getBirthOperations() == null) {
-                    // 生日当天手术量
-                    doctor.setBirthOperations(0);
-                }
-                if (doctor.getBirthVisits() == null) {
-                    // 生日当天看诊量
-                    doctor.setBirthVisits(0);   
-                }
+//                if (doctor.getHealing() == null) {
+//                    // 住院患者治疗量
+//                    doctor.setHealing(0);
+//                }
+//                if (doctor.getBirthOperations() == null) {
+//                    // 生日当天手术量
+//                    doctor.setBirthOperations(0);
+//                }
+//                if (doctor.getBirthVisits() == null) {
+//                    // 生日当天看诊量
+//                    doctor.setBirthVisits(0);
+//                }
                 doctorList.add(doctor);
             }
 
@@ -116,18 +118,18 @@ public class DoctorServiceImpl implements IDoctorService {
             @Override
             public void invoke(Doctor doctor, AnalysisContext analysisContext) {
                 if (doctor.getId().equals(id)) {
-                    if (doctor.getHealing() == null) {
-                        // 住院患者治疗量
-                        doctor.setHealing(0);
-                    }
-                    if (doctor.getBirthOperations() == null) {
-                        // 生日当天手术量
-                        doctor.setBirthOperations(0);
-                    }
-                    if (doctor.getBirthVisits() == null) {
-                        // 生日当天看诊量
-                        doctor.setBirthVisits(0);
-                    }
+//                    if (doctor.getHealing() == null) {
+//                        // 住院患者治疗量
+//                        doctor.setHealing(0);
+//                    }
+//                    if (doctor.getBirthOperations() == null) {
+//                        // 生日当天手术量
+//                        doctor.setBirthOperations(0);
+//                    }
+//                    if (doctor.getBirthVisits() == null) {
+//                        // 生日当天看诊量
+//                        doctor.setBirthVisits(0);
+//                    }
                     doctorList.add(doctor);
                 }
             }
@@ -155,7 +157,15 @@ public class DoctorServiceImpl implements IDoctorService {
      * @return
      */
     @Override
-    public String sendMsg(String token,String id) {
+    public String sendMsg(String token,String id) throws UnsupportedEncodingException {
+        String redirect_uri = URLEncoder.encode(url, "UTF-8");
+        String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                "appid=APPID" +
+                "&redirect_uri=REDIRECT_URI"+
+                "&response_type=code" +
+                "&scope=SCOPE" +
+                "&state=123#wechat_redirect";
+        wxUrl = wxUrl.replace("APPID",appid).replace("REDIRECT_URI",redirect_uri).replace("SCOPE","snsapi_userinfo");
         // 参数
         Map<String, Object> paramMap = new HashMap<>();
         // 图文内容
@@ -165,12 +175,12 @@ public class DoctorServiceImpl implements IDoctorService {
         Map articlesMap = new HashMap();
         articlesMap.put("title","医生节活动");
         articlesMap.put("description","救死扶伤，大爱无疆");
-        articlesMap.put("url","http://192.168.3.216:8181/findDoctorById?id="+id);
+//        articlesMap.put("url","http://192.168.3.216:8181/findDoctorById?id="+id);
+        articlesMap.put("url",wxUrl);
         articlesMap.put("picurl",jpgurl);
         arrayList.add(articlesMap);
         paramMap.put("touser",id);
         paramMap.put("msgtype", "news");
-//        paramMap.put("toparty", 3);
         paramMap.put("agentid", 2);
         paramMap.put("news", newsMap);
         newsMap.put("articles", arrayList);

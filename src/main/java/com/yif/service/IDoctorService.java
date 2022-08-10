@@ -2,6 +2,7 @@ package com.yif.service;
 
 import com.yif.entity.Doctor;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public interface IDoctorService {
      * @param id
      * @return
      */
-    public String sendMsg(String token,String id);
+    public String sendMsg(String token,String id) throws IOException;
 
     /**
      * 获取用户授权

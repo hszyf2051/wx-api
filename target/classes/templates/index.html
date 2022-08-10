@@ -1,87 +1,61 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1 ,user-scalable=no" />
-		<link rel="stylesheet" type="text/css" href="../static/css/jquery.fullPage.css" th:href="@{/css/jquery.fullPage.css}" />
-		<link rel="stylesheet" type="text/css" href="../static/css/animate.css" th:href="@{/css/animate.css}"/>
-		<link rel="stylesheet" type="text/css" href="../static/css/index.css" th:href="@{/css/index.css}"/>
-		<script src="../static/js/jquery-3.6.0.js" th:src="@{/js/jquery-3.6.0.js}" type="text/javascript" charset="utf-8"></script>
-		<script src="../static/js/jquery.fullPage.js" th:src="@{js/jquery.fullPage.js}" type="text/javascript" charset="utf-8"></script>
-		<title>南京妇幼</title>
-		<script type="text/javascript">
-			document.documentElement.style.fontSize = document.documentElement.clientWidth / 750*16 + 'px';			
-		</script>
-	</head>
-	<body>
-		<div id="dowebok">
-			<div class="section active">
-				<div class="page01-bg01"></div>
-				<div class="page01-bg02 animated"></div>
-				<div class="page01-bottom">
-					<div class="page01-title animated" th:each="doctor : ${doctors}">
-						<p>一年来，</p>
-						<p th:if="${doctor.name!=null}"><span th:text="${doctor.name}"></span></p>
-						<p th:if="${doctor.visits}!=null">您共接诊线上诊疗<span  class="timer" th:data-to="${doctor.visits}" th:data-speed="2000"></span>人次，</p>
-						<p>感谢您让冰冷的屏幕更有温度！</p>
-					</div>	
-				</div>
-				<div class="page-down">
-					<img src="../static/images/page01-i01.png" th:src="@{/images/page01-i01.png}"/>
-					<img src="../static/images/page01-i02.png" th:src="@{/images/page01-i02.png}"/>
-				</div>
-			</div>
-			<div class="section hotel">
-				第二屏
-			</div>
-			<div class="section join">
-				第三屏
-			</div>
-			<!--<div class="section footer fp-auto-height">
-				4		
-			</div>-->
-		</div>
-	</body>
-	<script src="../static/js/timepeople.js"  th:src="@{/js/timepeople.js}" type="text/javascript" charset="utf-8"></script>
-	<script>
-		$(function(){
-			setTimeout(function () {
-				$('.page01-bg02').addClass("fadeInLeft");
-			}, 500);
-			setTimeout(function () {
-				$('.page01-title').addClass("fadeInUp");
-				$('.timer').each(count);
-			}, 1000);
-			
-			$('#dowebok').fullpage({
-				verticalCentered: false,
-				navigation: false,
-				scrollingSpeed: 1000,
-		        easing: 'easeInOutCubic',
-		        easingcss3: 'ease',
-		        onLeave: function(anchorLink, index){
-					if(index == 1){
-						setTimeout(function () {
-							$('.page01-bg02').addClass("fadeInLeft");
-						}, 500);
-						setTimeout(function () {
-							$('.page01-title').addClass("fadeInUp");
-							$('.timer').each(count);
-						}, 1000);
-					}
-					if(index == 2){
-						setTimeout(function () {
-							$('.page01-bg02').removeClass("fadeInLeft");
-						}, 500);
-						setTimeout(function () { 
-							$('.page01-title').removeClass("fadeInUp");
-						}, 1000);
-					}
-					if(index == 3){
-
-					}
-				},
-			});
-		});
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1 ,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="../static/css/jquery.fullPage.css" th:href="@{css/jquery.fullPage.css}">
+	<link rel="stylesheet" type="text/css" href="../static/css/animate.css" th:href="@{css/animate.css}"/>
+	<link rel="stylesheet" type="text/css" href="../static/css/index.css" th:href="@{css/index.css}"/>
+	<script src="../static/js/jquery-3.6.0.js" th:src="@{js/jquery-3.6.0.js}" type="text/javascript" charset="utf-8"></script>
+	<script src="../static/js/jquery.fullPage.js" th:src="@{js/jquery.fullPage.js}" type="text/javascript" charset="utf-8"></script>
+	<title>南京妇幼</title>
+	<script type="text/javascript">
+		document.documentElement.style.fontSize = document.documentElement.clientWidth / 750*16 + 'px';
 	</script>
+</head>
+<body>
+<div class="login-box">
+	<div class="login-content">
+		<img src="../static/images/home01.png" th:src="@{/images/home01.png}"/>
+		<div class="login-info" th:each="doctor : ${doctors}">
+			<h5>尊敬的 <span th:text="${doctor.name}"></span> 老师：</h5>
+			<p>今天是中国医师节，祝您医师节快乐！谢谢您一直秉承着“厚德、爱生、精进、释悦”的家风，肩负起救死扶伤的使命，无怨无悔的付出；谢谢您的兢业探索，托举起生命的高度，照耀人生的温暖。让我们在这个特殊的日子里，一起出发去回顾您近1年的无私奉献吧！</p>
+			<a href="content.html" th:href="@{/redirect(id=${doctor.id})}">开启旅途</a>
+
+		</div>
+	</div>
+	<div class="login-icon">
+		<ul>
+			<li class="login-icon01 animated"><img src="../static/images/home-i01.png" th:src="@{/images/home-i01.png}"/></li>
+			<li class="login-icon02 animated"><img src="../static/images/home-i02.png" th:src="@{/images/home-i02.png}"/></li>
+			<li class="login-icon03 animated"><img src="../static/images/home-i03.png" th:src="@{/images/home-i03.png}"/></li>
+			<li class="login-icon04 animated"><img src="../static/images/home-i04.png" th:src="@{/images/home-i04.png}"/></li>
+			<li class="login-icon05 animated"><img src="../static/images/home-i05.png" th:src="@{/images/home-i05.png}"/></li>
+			<li class="login-icon06 animated"><img src="../static/images/home-i06.png" th:src="@{/images/home-i06.png}"/></li>
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		setTimeout(function (){
+			$('.login-icon01').animate({width:"9.4375rem"});
+		}, 500);
+		setTimeout(function (){
+			$('.login-icon02').addClass("fadeInUp");
+		}, 1500);
+		setTimeout(function (){
+			$('.login-icon03').addClass("fadeInLeft");
+		}, 1000);
+		setTimeout(function (){
+			$('.login-icon04').addClass("fadeInRight");
+		}, 1000);
+		setTimeout(function (){
+			$('.login-icon05').addClass("fadeInUp");
+		}, 1600);
+		setTimeout(function (){
+			$('.login-icon06').animate({width:"16.875rem"});
+		}, 1000);
+	})
+</script>
 </html>

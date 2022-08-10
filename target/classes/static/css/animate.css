@@ -952,8 +952,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @-webkit-keyframes fadeInDown {
   0% {
     opacity: 0;
-    -webkit-transform: translateY(-150px);
-    transform: translateY(-150px);
+    -webkit-transform: translateY(-50px);
+    transform: translateY(-50px);
   }
 
   100% {
@@ -966,9 +966,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @keyframes fadeInDown {
   0% {
     opacity: 0;
-    -webkit-transform: translateY(-150px);
-    -ms-transform: translateY(-150px);
-    transform: translateY(-150px);
+    -webkit-transform: translateY(-50px);
+    -ms-transform: translateY(-50px);
+    transform: translateY(-50px);
   }
 
   100% {
@@ -1092,8 +1092,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @-webkit-keyframes fadeInRight {
   0% {
     opacity: 0;
-    -webkit-transform: translateX(150px);
-    transform: translateX(150px);
+    -webkit-transform: translateX(50px);
+    transform: translateX(50px);
   }
 
   100% {
@@ -1106,9 +1106,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @keyframes fadeInRight {
   0% {
     opacity: 0;
-    -webkit-transform: translateX(150px);
-    -ms-transform: translateX(150px);
-    transform: translateX(150px);
+    -webkit-transform: translateX(50px);
+    -ms-transform: translateX(50px);
+    transform: translateX(50px);
   }
 
   100% {
@@ -1623,12 +1623,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @-webkit-keyframes flipInX {
   0% {
-    -webkit-transform: perspective(400px) rotateX(90deg);
-    transform: perspective(400px) rotateX(90deg);
+    -webkit-transform: perspective(400px) rotateX(180deg);
+    transform: perspective(400px) rotateX(180deg);
     opacity: 0;
   }
 
-  40% {
+  /*40% {
     -webkit-transform: perspective(400px) rotateX(-10deg);
     transform: perspective(400px) rotateX(-10deg);
   }
@@ -1636,7 +1636,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   70% {
     -webkit-transform: perspective(400px) rotateX(10deg);
     transform: perspective(400px) rotateX(10deg);
-  }
+  }*/
 
   100% {
     -webkit-transform: perspective(400px) rotateX(0deg);
@@ -1647,13 +1647,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @keyframes flipInX {
   0% {
-    -webkit-transform: perspective(400px) rotateX(90deg);
-    -ms-transform: perspective(400px) rotateX(90deg);
-    transform: perspective(400px) rotateX(90deg);
+    -webkit-transform: perspective(400px) rotateX(180deg);
+    -ms-transform: perspective(400px) rotateX(180deg);
+    transform: perspective(400px) rotateX(180deg);
     opacity: 0;
   }
 
-  40% {
+  /*40% {
     -webkit-transform: perspective(400px) rotateX(-10deg);
     -ms-transform: perspective(400px) rotateX(-10deg);
     transform: perspective(400px) rotateX(-10deg);
@@ -1663,7 +1663,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     -webkit-transform: perspective(400px) rotateX(10deg);
     -ms-transform: perspective(400px) rotateX(10deg);
     transform: perspective(400px) rotateX(10deg);
-  }
+  }*/
 
   100% {
     -webkit-transform: perspective(400px) rotateX(0deg);

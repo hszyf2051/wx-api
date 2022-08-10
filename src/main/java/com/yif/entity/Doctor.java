@@ -34,17 +34,17 @@ public class Doctor {
     private Integer visits;
 
     /**
+     * 看诊最多日看诊量
+     */
+    @ExcelProperty(value = "看诊最多日看诊量")
+    private Integer maxVisit;
+
+    /**
      * 看诊最多日期
      */
     @DateTimeFormat("yyyy年MM月dd日")
     @ExcelProperty(value = "看诊最多日期")
     private String maxVisitDate;
-
-    /**
-     * 看诊最多日看诊量
-     */
-    @ExcelProperty(value = "看诊最多日看诊量")
-    private Integer maxVisit;
 
     /**
      * 住院患者治疗量
@@ -61,7 +61,7 @@ public class Doctor {
     /**
      * 手术总时长
      */
-    @ExcelProperty(value = "手术总时长")
+    @ExcelProperty(value = "手术总时长（小时）")
     private String timeOperations;
 
     /**
@@ -69,6 +69,13 @@ public class Doctor {
      */
     @ExcelProperty(value = "手术最多搭档")
     private String partner;
+
+    /**
+     * 手术时长最长日期
+     */
+    @DateTimeFormat("yyyy年MM月dd日")
+    @ExcelProperty(value = "手术时长最长日期")
+    private String maxDate;
 
     /**
      * 手术时长最长时间

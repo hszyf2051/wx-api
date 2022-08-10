@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1 ,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../static/css/jquery.fullPage.css" th:href="@{/css/jquery.fullPage.css}">
+		<link rel="stylesheet" type="text/css" href="../static/css/animate.css" th:href="@{/css/animate.css}"/>
+		<link rel="stylesheet" type="text/css" href="../static/css/index.css" th:href="@{/css/index.css}"/>
+		<script src="../static/js/jquery-3.6.0.js" th:src="@{/js/jquery-3.6.0.js}" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/js/jquery.fullPage.js" th:src="@{/js/jquery.fullPage.js}" type="text/javascript" charset="utf-8"></script>
+		<title>南京妇幼</title>
+		<script type="text/javascript">
+			document.documentElement.style.fontSize = document.documentElement.clientWidth / 750*16 + 'px';			
+		</script>
+	</head>
+	<body>
+		<div id="dowebok" th:each="doctor : ${doctors}">
+			<div class="section active">
+				<div class="page02-bg01"></div>
+				<div class="page02-bg02 animated"><img src="../static/images/page02.png" th:src="@{images/page02.png}"/></div>
+				<div class="page02-text">
+					<div class="page02-title animated" >
+						<p>一年来，您共诊治了<span class="timer" th:data-to="${doctor.visits}" data-speed="2000"></span>位门诊患者！</p>
+						<p><span th:text="${doctor.maxVisitDate}"></span></p>
+						<p>是您近一年单日看诊人次最多的日子，</p>
+						<p>共诊治了<span class="timer" th:data-to="${doctor.maxVisit}" data-speed="2000"></span>位门诊患者！</p>
+						<p>再忙您也要注意身体！</p>
+					</div>	
+				</div>
+			</div>
+			<div class="section">
+				<div class="page03-bg01"></div>
+				<div class="page03-bg02 animated"><img src="../static/images/page03.png" th:src="@{/images/page03.png}"/></div>
+				<div class="page03-text">
+					<div class="page03-title animated" >
+						<p>一年来，您共参与治疗了<span class="timer" th:data-to="${doctor.visits}" data-speed="2000"></span>位住院患者,</p>
+						<p>您成功为患者施行了<span class="timer" th:data-to="${doctor.operation}" data-speed="2000"></span>次手术，</p>
+						<p>您在手术台上总共战斗了<span class="timer" th:data-to="${doctor.timeOperations}" data-speed="2000"></span>个小时！</p>
+						<p><span th:text="${doctor.partner}"></span>是您最坚实最默契的搭档。</p>
+<!--						timeOperations-->
+					</div>	
+				</div>
+				<div class="page03-bottom animated">
+					<p>数据来源于病案首页</p>
+					<p>手术次数统计包括: 手术医师, Ⅰ助, Ⅱ助</p>
+				</div>
+			</div>
+			<div class="section" style="background: #e6f7f9;">
+				<div class="page04-bg01 animated"></div>
+				<div class="page04-text">
+					<div class="page04-title animated" th:each="doctor : ${doctors}">
+						<h5 th:text="${doctor.maxDate}"></h5>
+						<p>您完成了一年来耗时最长的一台手术，</p>
+
+						<p><span class="timer" th:data-to="${doctor.maxTimeOperations}" data-speed="2000"></span>分钟映照着您疲惫又欣慰的身影！</p>
+						<p>您最晚<span th:text="${doctor.latestTimeOperations}"></span>才从手术台上离开！</p>
+						<p>妙手仁心紧握刀，</p>
+						<p>情牵生命抢分毫！</p>
+					</div>	
+				</div>
+				<div class="page03-bottom animated">
+					<p>数据来源于病案首页</p>
+					<p>手术次数统计包括: 手术医师, Ⅰ助, Ⅱ助</p>
+				</div>
+			</div>
+			<div class="section">
+				<div class="page05-bg01"></div>
+				<div class="page05-bg02">
+					<div class="page05-line animated">
+						<img src="../static/images/page05-2.png" th:src="@{/images/page05-2.png}"/>
+					</div>
+					<div class="page05-text animated">
+						<div class="page05-title">
+							<p><span th:text="${doctor.birthDate}"></span>是您的生日，</p>
+							<p>这一天您一如既往，</p>
+							<p>诊治了<span class="timer" th:data-to="${doctor.birthVisits}" data-speed="2000"></span>位患者，</p>
+							<!--<p>完成了<span class="timer" data-to="136" data-speed="2000">136</span>台手术，</p>-->
+							<p>不曾辜负每一份热情与希望！</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="section">
+				<div class="page01-bg01"></div>
+				<div class="page01-bg02 animated"></div>
+				<div class="page01-bottom">
+					<div class="page01-title animated" >
+						<p>一年来，</p>
+						<p>您共接诊线上诊疗<span class="timer" th:data-to="${doctor.onlineVisits}" data-speed="2000"></span>人次，</p>
+						<p>感谢您让冰冷的屏幕更有温度！</p>
+					</div>	
+				</div>
+			</div>
+			<div class="section">
+				<div class="page06-bg01"></div>
+				<div class="page06-icon">
+					<ul>
+						<li class="page06-icon01 animated"><img src="../static/images/page06.png" th:src="@{/images/page06.png}"/></li>
+						<li class="page06-icon02 animated"><img src="../static/images/home-i01.png" th:src="@{/images/home-i01.png}"/></li>
+						<li class="page06-icon03 animated"><img src="../static/images/home-i02.png" th:src="@{/images/home-i02.png}"/></li>
+						<li class="page06-icon04 animated"><img src="../static/images/home-i06.png" th:src="@{/images/home-i06.png}"/></li>
+					</ul>
+				</div>
+				<div class="page06-text">
+					<div class="page06-title animated" >
+						<p class="animated">医者之路，艰辛亦荣耀；初心常在，无悔即人生。感谢您这一年辛苦无悔地付出，向守护在岗位的您，致以最诚挚的节日问候！</p>
+						<h5><p><span class="animated">谢</span><span class="animated">谢</span><span class="animated">您</span><span class="animated">！</span></p></h5>
+						<a class="animated" href="index.html" th:href="@{/findDoctorById(id=${doctor.id})}">再次回顾</a>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<div class="page-down">
+			<img src="../static/images/page01-i01.png" th:src="@{/images/page01-i01.png}"/>
+			<img src="../static/images/page01-i02.png" th:src="@{/images/page01-i02.png}"/>
+		</div>
+	</body>
+	<script src="../static/js/timepeople.js" th:src="@{/js/timepeople.js}" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$(function(){
+			setTimeout(function () {
+				$('.page02-title').addClass("fadeInDown");
+				$('.timer').each(count);
+			}, 1000);
+			setTimeout(function () {
+				$('.page02-bg02').addClass("fadeInRight");
+			}, 500);			
+			$('#dowebok').fullpage({
+				verticalCentered: false,
+				navigation: false,
+				scrollingSpeed: 1000,
+		        easing: 'easeInOutCubic',
+		        easingcss3: 'ease',
+		        onLeave: function(anchorLink, index){
+		        	if(index == 1){
+		        		setTimeout(function () {
+							$('.page02-title').addClass("fadeInDown");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page02-bg02').addClass("fadeInRight");
+						}, 1000);
+						setTimeout(function () {
+							$('.page03-title').removeClass("fadeInDown");
+						}, 1000);
+						setTimeout(function () {
+							$('.page03-bg02').removeClass("fadeInUp");
+							$('.page03-bottom').removeClass("fadeInUp");
+						}, 1000);
+		        	}
+					if(index == 2){
+
+						setTimeout(function () {
+							$('.page03-title').addClass("fadeInDown");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page03-bg02').addClass("fadeInUp");
+							$('.page03-bottom').addClass("fadeInUp");
+						}, 1000);
+						setTimeout(function () {
+							$('.page02-title').removeClass("fadeInDown");
+						}, 1000);
+						setTimeout(function () {
+							$('.page02-bg02').removeClass("fadeInRight");
+						}, 1000);
+						setTimeout(function () {
+							$('.page04-title').removeClass("fadeInDown");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page04-bg01').removeClass("changeScale");
+							$('.timer').each(count);
+						}, 1000);
+					}
+					if(index == 3){
+						setTimeout(function () {
+							$('.page04-title').addClass("fadeInDown");
+							$('.timer').each(count);
+						}, 2000);
+						setTimeout(function () {
+							$('.page04-bg01').addClass("changeScale");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page03-title').removeClass("fadeInDown");
+						}, 1000);
+						setTimeout(function () {
+							$('.page03-bg02').removeClass("fadeInUp");
+							$('.page03-bottom').removeClass("fadeInUp");
+						}, 500);
+						setTimeout(function () {
+							$('.page05-line').removeClass("fadeInUp");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page05-text').removeClass("fadeInUp");
+						}, 1000);
+
+					}
+					if(index == 4){
+						setTimeout(function () {
+							$('.page05-line').addClass("fadeInUp");
+						}, 1000);
+						setTimeout(function () {
+							$('.page05-text').addClass("fadeInUp");
+							$('.timer').each(count);
+						}, 1500);
+						setTimeout(function () {
+							$('.page04-title').removeClass("fadeInDown");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page04-bg01').removeClass("changeScale");
+							$('.timer').each(count);
+						}, 1000);
+		        		setTimeout(function () {
+							$('.page01-bg02').removeClass("fadeInLeft");
+						}, 1000);
+						setTimeout(function () { 
+							$('.page01-title').removeClass("fadeInUp");
+						}, 1000);	
+					}
+					if(index == 5){
+						setTimeout(function () {
+							$('.page01-bg02').addClass("fadeInLeft");
+						}, 500);
+						setTimeout(function () {
+							$('.page01-title').addClass("fadeInUp");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page05-line').removeClass("fadeInUp");
+							$('.timer').each(count);
+						}, 1000);
+						setTimeout(function () {
+							$('.page05-text').removeClass("flipInX");
+						}, 1000);
+						setTimeout(function () {
+							$('.page06-icon01').removeClass("fadeInUp");
+							$('.page06-title>p').removeClass("fadeInDown");
+						}, 1000);
+						setTimeout(function () {
+							$('.page06-icon02').animate({width:"0"});
+							$('.page06-icon04').animate({width:"0"});
+							$('.page06-icon03').removeClass("fadeInUp");
+						}, 1000);
+						$('.page-down').css('display','block');
+						setTimeout(function () {
+							$('.page06-title h5 p span').removeClass("fadeInDown");
+						}, 1000);
+						setTimeout(function () {
+							$('.page06-title a').removeClass("fadeInDown");
+						}, 1000);
+					}
+					if(index == 6){
+						setTimeout(function () {
+							$('.page06-icon01').addClass("fadeInUp");
+							$('.page06-title>p').addClass("fadeInDown");
+						}, 1000);
+						setTimeout(function () {
+							$('.page06-icon02').animate({width:"9.4375rem"});
+							$('.page06-icon04').animate({width:"16.875rem"});
+							$('.page06-icon03').addClass("fadeInUp");
+						}, 2000);
+						setTimeout(function () {
+							$('.page06-title h5 p span').eq(0).addClass("fadeInDown");
+						}, 1400);
+						setTimeout(function () {
+							$('.page06-title h5 p span').eq(1).addClass("fadeInDown");
+						}, 1700);
+						setTimeout(function () {
+							$('.page06-title h5 p span').eq(2).addClass("fadeInDown");
+						}, 2000);
+						setTimeout(function () {
+							$('.page06-title h5 p span').eq(3).addClass("fadeInDown");
+						}, 2300);
+						setTimeout(function () {
+							$('.page06-title a').addClass("fadeInDown");
+						}, 2600);
+						
+						setTimeout(function () {
+							$('.page01-bg02').removeClass("fadeInLeft");
+						}, 1000);
+						setTimeout(function () { 
+							$('.page01-title').removeClass("fadeInUp");
+						}, 1000);
+						$('.page-down').css('display','none');
+					}
+				},
+			});
+		});
+	</script>
+</html>

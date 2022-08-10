@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 ,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="../static/css2/jquery.fullPage.css" th:href="@{/css2/jquery.fullPage.css}" />
+    <link rel="stylesheet" type="text/css" href="../static/css2/animate.css" th:href="@{/css2/animate.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css2/index.css" th:href="@{/css2/index.css}"/>
+    <script src="../static/js/jquery-3.6.0.js" th:src="@{/js/jquery-3.6.0.js}" type="text/javascript" charset="utf-8"></script>
+    <script src="../static/js/jquery.fullPage.js" th:src="@{js/jquery.fullPage.js}" type="text/javascript" charset="utf-8"></script>
+    <title>南京妇幼</title>
+    <script type="text/javascript">
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 750*16 + 'px';
+    </script>
+</head>
+<body>
+<div id="dowebok">
+    <div class="section active">
+        <div class="page01-bg01"></div>
+        <div class="page01-bg02 animated"></div>
+        <div class="page01-bottom">
+            <div class="page01-title animated" th:each="doctor : ${doctors}">
+                <p>一年来，</p>
+                <p th:if="${doctor.name!=null}"><span th:text="${doctor.name}"></span></p>
+                <p th:if="${doctor.visits}!=null">您共接诊线上诊疗<span  class="timer" th:data-to="${doctor.visits}" th:data-speed="2000"></span>人次，</p>
+                <p>感谢您让冰冷的屏幕更有温度！</p>
+            </div>
+        </div>
+        <div class="page-down">
+            <img src="../static/images2/page01-i01.png" th:src="@{images2}"/>
+            <img src="../static/images2/page01-i02.png" th:src="@{images2}"/>
+        </div>
+    </div>
+    <div class="section hotel">
+        第二屏
+    </div>
+    <div class="section join">
+        第三屏
+    </div>
+    <!--<div class="section footer fp-auto-height">
+        4
+    </div>-->
+</div>
+</body>
+<script src="../static/js/timepeople.js"  th:src="@{/js/timepeople.js}" type="text/javascript" charset="utf-8"></script>
+<script>
+    $(function(){
+        setTimeout(function () {
+            $('.page01-bg02').addClass("fadeInLeft");
+        }, 500);
+        setTimeout(function () {
+            $('.page01-title').addClass("fadeInUp");
+            $('.timer').each(count);
+        }, 1000);
+
+        $('#dowebok').fullpage({
+            verticalCentered: false,
+            navigation: false,
+            scrollingSpeed: 1000,
+            easing: 'easeInOutCubic',
+            easingcss3: 'ease',
+            onLeave: function(anchorLink, index){
+                if(index == 1){
+                    setTimeout(function () {
+                        $('.page01-bg02').addClass("fadeInLeft");
+                    }, 500);
+                    setTimeout(function () {
+                        $('.page01-title').addClass("fadeInUp");
+                        $('.timer').each(count);
+                    }, 1000);
+                }
+                if(index == 2){
+                    setTimeout(function () {
+                        $('.page01-bg02').removeClass("fadeInLeft");
+                    }, 500);
+                    setTimeout(function () {
+                        $('.page01-title').removeClass("fadeInUp");
+                    }, 1000);
+                }
+                if(index == 3){
+
+                }
+            },
+        });
+    });
+</script>
+</html>

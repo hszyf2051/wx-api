@@ -78,6 +78,13 @@ public class DoctorController {
         return new ModelAndView ("index");
     }
 
+    @GetMapping("/redirect")
+    public ModelAndView redirect(Model model,@RequestParam String id) {
+        List<Doctor> doctors = doctorService.findDoctorById(id);
+        model.addAttribute("doctors",doctors);
+        return new ModelAndView ("content");
+    }
+
     /**
      * 根据id给指定医生发送消息
      * @param id
@@ -85,7 +92,7 @@ public class DoctorController {
      */
     @GetMapping("/sendDoctorMsgById")
     @ApiOperation(value = "根据id给指定医生发送消息")
-    public String sendMsg(@RequestParam String id) {
+    public String sendMsg(@RequestParam String id) throws IOException {
         String token = redisUtils.get("token");
         String msg;
         if (token == null) {
@@ -106,7 +113,7 @@ public class DoctorController {
      */
     @GetMapping("/sendDoctorMsgAll")
     @ApiOperation(value = "给每个医生发送自己的信息统计")
-    public void sendMsgAll() {
+    public void sendMsgAll() throws IOException{
         // 获取Excel所有的成员信息
         List<Doctor> doctors = doctorService.readDoctors();
         for (Doctor doctor : doctors) {
@@ -125,6 +132,7 @@ public class DoctorController {
                 "&response_type=code" +
                 "&scope=SCOPE" +
                 "&state=123#wechat_redirect";
+
         response.sendRedirect(wxUrl.replace("APPID",corpid).replace("REDIRECT_URI",redirect_uri).replace("SCOPE","snsapi_userinfo"));
     }
 }

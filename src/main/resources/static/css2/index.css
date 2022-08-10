@@ -1,0 +1,147 @@
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div{margin:0;padding:0;border:0;box-sizing: border-box;}
+body{background:#fff;color:#333;font-family: "微软雅黑";}
+ul,ol,li{list-style-type:none;}
+select,input,img,select{vertical-align:middle;box-sizing: border-box;}
+a{color:#333;text-decoration:none;}
+dl,dt,dd{margin: 0;}
+ul{
+	zoom: 1;
+}
+ul:after{
+	display: block;
+	content: '';
+	clear: both;
+}
+.clear{
+	clear: both;
+}
+.page01-bg01{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: url(../images2/page01-bg01.jpg) no-repeat center center;
+	background-size: cover;
+	top: 0;
+	left: 0;
+	z-index: 2;
+}
+.page01-bg02{
+	position: absolute;
+	width: 48.75rem;
+	height: 100%;
+	background: url(../images2/page01-bg02.png) no-repeat center center;
+	background-size: cover;
+	top: 0;
+	left: 0;
+	z-index: 4;
+	opacity: 0;
+    -webkit-transform: translateX(-50px);
+    -ms-transform: translateX(-50px);
+    transform: translateX(-50px);
+}
+
+.page01-bottom{
+	width: 100%;
+	height: 19.25rem;
+	background: url(../images2/page01-bg03.png) no-repeat center bottom;
+	background-size: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 6;
+}
+.page01-title{
+	width: 100%;
+	padding: 0 3%;
+	position: absolute;
+	bottom: 5.2rem;
+	z-index: 10;
+	opacity: 0;
+    -webkit-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    transform: translateY(50px);
+}
+.page01-title p{
+	font-size: 1.86rem;
+	color: #333333;
+	margin-bottom: 0.4rem;
+	line-height: 2.4rem;
+}
+.page01-title p span{
+	font-size: 2.825rem;
+	color: #dc3072;
+}
+.page01-title p:nth-child(1){
+	margin-bottom: 0;
+}
+.page-down{
+	position: absolute;
+	left: 50%;
+	bottom: 0.875rem;
+	transform: translateX(-50%);
+	z-index: 10;
+}
+.page-down img:nth-child(1){
+	display: block;
+	width: 1.925rem;
+	margin: 0 auto;
+	margin-bottom: 0.06rem;
+}
+.page-down img:nth-child(2){
+	display: block;
+	width: 1.4875rem;
+	margin: 0 auto;
+	animation: jTdown 5s infinite;
+	-webkit-animation:jTdown 2.5s infinite; /*Safari and Chrome*/
+}
+@keyframes jTdown{
+	0% {
+		-webkit-transform: translateY(0);
+	    -ms-transform: translateY(0);
+	    transform: translateY(0);
+	}
+	50%{
+		-webkit-transform: translateY(0.5rem);
+	    -ms-transform: translateY(0.5rem);
+	    transform: translateY(0.5rem);
+	}
+	100% {
+		-webkit-transform: translateY(0);
+	    -ms-transform: translateY(0);
+	    transform: translateY(0);
+	}
+}
+@-webkit-keyframes jTdown{
+	0% {
+		-webkit-transform: translateY(0);
+	    -ms-transform: translateY(0);
+	    transform: translateY(0);
+	}
+	50%{
+		-webkit-transform: translateY(0.5rem);
+	    -ms-transform: translateY(0.5rem);
+	    transform: translateY(0.5rem);
+	}
+	100% {
+		-webkit-transform: translateY(0);
+	    -ms-transform: translateY(0);
+	    transform: translateY(0);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
