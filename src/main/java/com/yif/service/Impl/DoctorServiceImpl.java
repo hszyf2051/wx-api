@@ -118,6 +118,9 @@ public class DoctorServiceImpl implements IDoctorService {
             @Override
             public void invoke(Doctor doctor, AnalysisContext analysisContext) {
                 if (doctor.getId().equals(id)) {
+                    // 去除excel中的分钟
+                    String MaxTimeOperations = doctor.getMaxTimeOperations().replace("分钟", "");
+                    doctor.setMaxTimeOperations(MaxTimeOperations);
 //                    if (doctor.getHealing() == null) {
 //                        // 住院患者治疗量
 //                        doctor.setHealing(0);
@@ -195,16 +198,4 @@ public class DoctorServiceImpl implements IDoctorService {
         return null;
     }
 
-//    @Override
-//    public String accessUser(HttpServletResponse response)throws IOException {
-//        String urlencoder = URLEncoder.encode(url,"UTF-8");
-//        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
-//                "appid=APPID" +
-//                "&redirect_uri=REDIRECT_URI"+
-//                "&response_type=code" +
-//                "&scope=SCOPE" +
-//                "&state=123#wechat_redirect";
-//
-//        return httpPost;
-//    }
 }
