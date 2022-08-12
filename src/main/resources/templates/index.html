@@ -18,9 +18,14 @@
 	<div class="login-content">
 		<img src="../static/images/home01.png" th:src="@{/images/home01.png}"/>
 		<div class="login-info" th:each="doctor : ${doctors}">
-			<h5>尊敬的 <span th:text="${doctor.name}"></span> 老师：</h5>
-			<p>今天是中国医师节，祝您医师节快乐！谢谢您一直秉承着“厚德、爱生、精进、释悦”的家风，肩负起救死扶伤的使命，无怨无悔的付出；谢谢您的兢业探索，托举起生命的高度，照耀人生的温暖。让我们在这个特殊的日子里，一起出发去回顾您近1年的无私奉献吧！</p>
-			<a href="content.html" th:href="@{/redirect(id=${doctor.id})}">开启旅途</a>
+			<div th:if="${doctor.name!=null}">
+				<h5>尊敬的 <span th:text="${doctor.name}"></span> 老师：</h5>
+				<p>今天是中国医师节，祝您医师节快乐！谢谢您一直秉承着“厚德、爱生、精进、释悦”的家风，肩负起救死扶伤的使命，无怨无悔的付出；谢谢您的兢业探索，托举起生命的高度，照耀人生的温暖。让我们在这个特殊的日子里，一起出发去回顾您近1年的无私奉献吧！</p>
+				<a href="content.html" th:href="@{/redirect}">开启旅途</a>
+			</div>
+			<div th:if="${doctor.name==null}">
+				<h2 style="text-align: center">未获取到您的信息</h2>
+			</div>
 
 		</div>
 	</div>

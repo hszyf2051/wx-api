@@ -2,16 +2,21 @@ package com.yif.service.Impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yif.entity.Doctor;
+import com.yif.param.RightMsg;
 import com.yif.service.IDoctorService;
 import com.yif.util.HttpUtil;
+import com.yif.util.OuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +46,9 @@ public class DoctorServiceImpl implements IDoctorService {
     private String appid;
 
     private  Map<String, Object> doctorData;
+
+    @Autowired
+    private OuthUtil outhUtil;
 
     /**
      * 开启项目读取excel数据
@@ -153,6 +161,7 @@ public class DoctorServiceImpl implements IDoctorService {
      */
     @Override
     public String sendMsg(String token,String id) throws UnsupportedEncodingException {
+//        outhUtil.getOuth2Url().va
 //        String redirect_uri = URLEncoder.encode(url, "UTF-8");
 //        String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
 //                "appid=APPID" +
@@ -170,7 +179,10 @@ public class DoctorServiceImpl implements IDoctorService {
         Map articlesMap = new HashMap();
         articlesMap.put("title","医生节活动");
         articlesMap.put("description","医者仁心，大爱无疆。亲爱的医生，向您致以最崇高的敬意与感谢，您辛苦了！祝您节日快乐！");
-        articlesMap.put("url","http://192.168.18.103:8181/findDoctor?id="+id);
+//        articlesMap.put("url","http://192.168.18.103:8181/findDoctor?id="+id);
+       // articlesMap.put("url","http://foemy.asuscomm.com:8181/accessUser");
+         articlesMap.put("url",url);
+
 //        articlesMap.put("url","http://foemy.asuscomm.com:8181/findDoctor?id="+id);
 //        articlesMap.put("url",wxUrl);
         articlesMap.put("picurl",jpgurl);
@@ -253,15 +265,18 @@ public class DoctorServiceImpl implements IDoctorService {
                     wrongMsg.add("发送失败的id:" +doctorId);
                 }
                 log.info(msg);
-
-
             } catch (Exception e) {
                 log.info("error 失败了");
             }
         }
-
-        System.out.println(rightMsg);
-        System.out.println(wrongMsg);
+        // 将成功发送人的数据写入Excel
+        String rightFilename = "C:/Users/admin/Desktop/Api/sendMsgSuccess.xlsx";
+        ExcelWriter excelWriterRight = EasyExcel.write(rightFilename, RightMsg.class).build();
+        WriteSheet writeSheetRight = EasyExcel.writerSheet("发送成功医生信息").build();
+        excelWriterRight.write(rightMsg,writeSheetRight);
+        excelWriterRight.finish();
+        log.info(String.valueOf(rightMsg));
+        log.info(String.valueOf(wrongMsg));
     }
 
 
