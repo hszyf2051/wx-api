@@ -9,6 +9,9 @@ com\yif\service\Impl\DoctorServiceImpl$2.class
 com\yif\util\CacheSingletonUtil.class
 com\yif\entity\Doctor.class
 com\yif\service\Impl\DoctorServiceImpl.class
+com\yif\util\OuthUtil.class
+com\yif\param\WrongMsg.class
+com\yif\param\RightMsg.class
 com\yif\service\Impl\UserServiceImpl$1.class
 com\yif\config\MyApplicationRunner.class
 com\yif\service\Impl\DoctorServiceImpl$1.class

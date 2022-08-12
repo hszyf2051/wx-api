@@ -56,7 +56,7 @@ public class DoctorServiceImpl implements IDoctorService {
     @PostConstruct
     void initDocetorData(){
         doctorData = this.readDoctors2();
-        System.out.println(doctorData);
+        log.info(String.valueOf(doctorData));
     }
 
 
@@ -105,7 +105,6 @@ public class DoctorServiceImpl implements IDoctorService {
         excelReader.read(readSheet);
         // 关闭流操作，在读取文件时会创建临时文件,如果不关闭,磁盘爆掉
         excelReader.finish();
-        log.info(String.valueOf(doctorList));
         return doctorList;
     }
 
@@ -134,7 +133,6 @@ public class DoctorServiceImpl implements IDoctorService {
         excelReader.read(readSheet);
         // 关闭流操作，在读取文件时会创建临时文件,如果不关闭,磁盘爆掉
         excelReader.finish();
-        log.info(String.valueOf(doctorMap));
         return doctorMap;
     }
 
@@ -161,15 +159,6 @@ public class DoctorServiceImpl implements IDoctorService {
      */
     @Override
     public String sendMsg(String token,String id) throws UnsupportedEncodingException {
-//        outhUtil.getOuth2Url().va
-//        String redirect_uri = URLEncoder.encode(url, "UTF-8");
-//        String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
-//                "appid=APPID" +
-//                "&redirect_uri=REDIRECT_URI"+
-//                "&response_type=code" +
-//                "&scope=SCOPE" +
-//                "&state=123#wechat_redirect";
-//        wxUrl = wxUrl.replace("APPID",appid).replace("REDIRECT_URI",redirect_uri).replace("SCOPE","snsapi_userinfo");
         // 参数
         Map<String, Object> paramMap = new HashMap<>();
         // 图文内容
@@ -179,12 +168,8 @@ public class DoctorServiceImpl implements IDoctorService {
         Map articlesMap = new HashMap();
         articlesMap.put("title","医生节活动");
         articlesMap.put("description","医者仁心，大爱无疆。亲爱的医生，向您致以最崇高的敬意与感谢，您辛苦了！祝您节日快乐！");
-//        articlesMap.put("url","http://192.168.18.103:8181/findDoctor?id="+id);
-       // articlesMap.put("url","http://foemy.asuscomm.com:8181/accessUser");
          articlesMap.put("url",url);
 
-//        articlesMap.put("url","http://foemy.asuscomm.com:8181/findDoctor?id="+id);
-//        articlesMap.put("url",wxUrl);
         articlesMap.put("picurl",jpgurl);
         arrayList.add(articlesMap);
         paramMap.put("touser",id);
@@ -230,9 +215,7 @@ public class DoctorServiceImpl implements IDoctorService {
                         doctor.setBirthDate(this.formatDate3(birthDate));
                     }
                 }
-
                 BeanUtils.copyProperties(doctor,doctorNew);
-                log.info(String.valueOf(doctorNew));
             }
         }
         return doctorNew;
@@ -256,7 +239,7 @@ public class DoctorServiceImpl implements IDoctorService {
                 // 转化json对象
                 JSONObject jsonMsg = JSONObject.parseObject(msg);
                 Integer code = jsonMsg.getInteger("errcode");
-                System.out.println("状态码：" + code);
+                log.info("状态码：" + code);
                 if (code == 0) {
                     // 成功  记录成功人KEY  记录一下成功文件   内存属性发送标记
                     rightMsg.add("已成功发送的医生：" + doctorId);
@@ -318,13 +301,6 @@ public class DoctorServiceImpl implements IDoctorService {
         String now = new SimpleDateFormat("M月d日 ").format(newDate);
         return now;
     }
-
-
-    @Override
-    public String accessUser() {
-        return null;
-    }
-
 
 
 }

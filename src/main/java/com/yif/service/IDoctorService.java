@@ -39,11 +39,6 @@ public interface IDoctorService {
     public String sendMsg(String token,String id) throws IOException;
 
     /**
-     * 获取用户授权
-     */
-    String accessUser();
-
-    /**
      * 给所有人发送消息
      */
     void sendAllMsg()  throws UnsupportedEncodingException;

@@ -33,6 +33,7 @@ spring:
 
 doctor:
   fileName: "C:/Users/admin/Desktop/Api/医师节数据样例.xlsx"
+#  fileName: "/usr/fomey/医师节数据样例.xlsx"
   corpid: wx1199888fb72190c9
   corpsecret: oUCu-DxjBNMgkT7ltCqSos7SvYOeV32beRK0SXmLjcs
   # 授权后重定向的回调链接地址，请使用urlencode对链接进行处理
