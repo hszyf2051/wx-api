@@ -39,6 +39,6 @@ doctor:
   #  snsapi_base：静默授权，可获取成员的基础信息（UserId与DeviceId）；
   #  snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息。
   agentid: 2
-  jpgUrl: https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F4fdf8a7e48d506a45758b57eb8dcb0ce747baec8.jpg&refer=http%3A%2F%2Fi0.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662260067&t=ae7d84f3241dafb0c97d9859cdc979f9
+  jpgUrl: http://foemy.asuscomm.com:8181/images/doctor.jpg
 User:
   fileName: "C:\\\\Users\\\\admin\\\\Desktop\\\\Api\\\\魔梵研发组.xlsx"

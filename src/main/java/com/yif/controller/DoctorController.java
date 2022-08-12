@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 @RestController
 @Slf4j
@@ -44,12 +44,14 @@ public class DoctorController {
     @Autowired
     private RedisUtils redisUtils;
 
+
     @GetMapping("/getWxToken")
     @ApiOperation(value = "获取企业微信Token")
-    public String getToken(@RequestParam String corpid, @RequestParam String corpsecret) {
+    public String getToken() {
         String token = doctorService.getToken(corpid, corpsecret);
         // 设置缓存时间为1h
-        redisUtils.set("token",token,1,TimeUnit.HOURS);
+//        redisUtils.set("token",token,1,TimeUnit.HOURS);
+        System.out.println(token);
         return token;
     }
 
@@ -68,20 +70,26 @@ public class DoctorController {
     /**
      * 根据id查找对应的医生
      * @param model
-     * @param id
      * @return
      */
     @GetMapping("/findDoctorById")
-    public ModelAndView findDoctorById(Model model,@RequestParam String id) {
-        List<Doctor> doctors = doctorService.findDoctorById(id);
+    public ModelAndView findDoctorById(Model model) {
+        List<Doctor> doctors = doctorService.findDoctorById();
         model.addAttribute("doctors",doctors);
+        return new ModelAndView ("index");
+    }
+
+    @GetMapping("/findDoctor")
+    public ModelAndView findDoctor(Model model,@RequestParam String id) {
+        Doctor doctor = doctorService.findDoctor(id);
+        model.addAttribute("doctors",doctor);
         return new ModelAndView ("index");
     }
 
     @GetMapping("/redirect")
     public ModelAndView redirect(Model model,@RequestParam String id) {
-        List<Doctor> doctors = doctorService.findDoctorById(id);
-        model.addAttribute("doctors",doctors);
+        Doctor doctor = doctorService.findDoctor(id);
+        model.addAttribute("doctors",doctor);
         return new ModelAndView ("content");
     }
 
@@ -93,19 +101,22 @@ public class DoctorController {
     @GetMapping("/sendDoctorMsgById")
     @ApiOperation(value = "根据id给指定医生发送消息")
     public String sendMsg(@RequestParam String id) throws IOException {
-        String token = redisUtils.get("token");
-        String msg;
-        if (token == null) {
-            // 获取新的token
-            this.getToken(corpid, corpsecret);
-            String tokenNew = redisUtils.get("token");
-            log.info("token不存在，已重新生成");
-            msg = doctorService.sendMsg(tokenNew,id);
-        } else {
-            log.info("token存在，发送消息");
-            msg = doctorService.sendMsg(token,id);
-        }
-        return msg;
+        String token = this.getToken();
+        String s = doctorService.sendMsg(token, id);
+        return s;
+//        String token = redisUtils.get("token");
+//        String msg;
+//        if (token == null) {
+//            // 获取新的token
+////            this.getToken(corpid, corpsecret);
+//            String tokenNew = redisUtils.get("token");
+//            log.info("token不存在，已重新生成");
+//            msg = doctorService.sendMsg(tokenNew,id);
+//        } else {
+//            log.info("token存在，发送消息");
+//            msg = doctorService.sendMsg(token,id);
+//        }
+//        return msg;
     }
 
     /**
@@ -114,12 +125,7 @@ public class DoctorController {
     @GetMapping("/sendDoctorMsgAll")
     @ApiOperation(value = "给每个医生发送自己的信息统计")
     public void sendMsgAll() throws IOException{
-        // 获取Excel所有的成员信息
-        List<Doctor> doctors = doctorService.readDoctors();
-        for (Doctor doctor : doctors) {
-            String id = doctor.getId();
-            this.sendMsg(id);
-        }
+        doctorService.sendAllMsg();
     }
 
     @RequestMapping("/accessUser")
@@ -132,7 +138,6 @@ public class DoctorController {
                 "&response_type=code" +
                 "&scope=SCOPE" +
                 "&state=123#wechat_redirect";
-
         response.sendRedirect(wxUrl.replace("APPID",corpid).replace("REDIRECT_URI",redirect_uri).replace("SCOPE","snsapi_userinfo"));
     }
 }

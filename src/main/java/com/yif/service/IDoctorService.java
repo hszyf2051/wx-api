@@ -3,7 +3,9 @@ package com.yif.service;
 import com.yif.entity.Doctor;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yif
@@ -17,9 +19,15 @@ public interface IDoctorService {
      */
     public String getToken(String corpid,String corpsecret);
 
+    /**
+     * 获取医生信息
+     * @return
+     */
     public List<Doctor> readDoctors();
 
-    public List<Doctor> findDoctorById(String id);
+    public Map<String, Object> readDoctors2();
+
+    public List<Doctor> findDoctorById();
 
     /**
      * 给客户发送消息
@@ -33,4 +41,11 @@ public interface IDoctorService {
      * 获取用户授权
      */
     String accessUser();
+
+    /**
+     * 给所有人发送消息
+     */
+    void sendAllMsg()  throws UnsupportedEncodingException;
+
+    Doctor findDoctor(String id);
 }
