@@ -4,6 +4,7 @@ import com.yif.entity.Doctor;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public interface IDoctorService {
 
     public Map<String, Object> readDoctors2();
 
-    public List<Doctor> findDoctorById();
+    public List<Doctor> findAllDoctor();
 
     /**
      * 给客户发送消息
@@ -47,5 +48,5 @@ public interface IDoctorService {
      */
     void sendAllMsg()  throws UnsupportedEncodingException;
 
-    Doctor findDoctor(String id);
+    Doctor findDoctor(String id) throws ParseException;
 }

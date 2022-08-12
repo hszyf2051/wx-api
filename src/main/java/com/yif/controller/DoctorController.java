@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -68,56 +68,63 @@ public class DoctorController {
     }
 
     /**
-     * 根据id查找对应的医生
+     * 找到所有医生信息
      * @param model
      * @return
      */
-    @GetMapping("/findDoctorById")
-    public ModelAndView findDoctorById(Model model) {
-        List<Doctor> doctors = doctorService.findDoctorById();
-        model.addAttribute("doctors",doctors);
-        return new ModelAndView ("index");
+    @GetMapping("/findAllDoctor")
+    @ApiOperation(value = "查找所有医生信息")
+    public List<Doctor> findDoctorById(Model model) {
+        List<Doctor> doctors = doctorService.findAllDoctor();
+        return doctors;
     }
 
+    /**
+     * 根据id查找单个医生并返回给页面数据
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("/findDoctor")
-    public ModelAndView findDoctor(Model model,@RequestParam String id) {
+    @ApiOperation(value = "根据id查找医生")
+    public ModelAndView findDoctor(Model model,@RequestParam String id) throws ParseException {
         Doctor doctor = doctorService.findDoctor(id);
         model.addAttribute("doctors",doctor);
         return new ModelAndView ("index");
     }
 
     @GetMapping("/redirect")
-    public ModelAndView redirect(Model model,@RequestParam String id) {
+    public ModelAndView redirect(Model model,@RequestParam String id) throws ParseException {
         Doctor doctor = doctorService.findDoctor(id);
         model.addAttribute("doctors",doctor);
         return new ModelAndView ("content");
     }
 
-    /**
-     * 根据id给指定医生发送消息
-     * @param id
-     * @return
-     */
-    @GetMapping("/sendDoctorMsgById")
-    @ApiOperation(value = "根据id给指定医生发送消息")
-    public String sendMsg(@RequestParam String id) throws IOException {
-        String token = this.getToken();
-        String s = doctorService.sendMsg(token, id);
-        return s;
-//        String token = redisUtils.get("token");
-//        String msg;
-//        if (token == null) {
-//            // 获取新的token
-////            this.getToken(corpid, corpsecret);
-//            String tokenNew = redisUtils.get("token");
-//            log.info("token不存在，已重新生成");
-//            msg = doctorService.sendMsg(tokenNew,id);
-//        } else {
-//            log.info("token存在，发送消息");
-//            msg = doctorService.sendMsg(token,id);
-//        }
-//        return msg;
-    }
+//    /**
+//     * 根据id给指定医生发送消息
+//     * @param id
+//     * @return
+//     */
+//    @GetMapping("/sendDoctorMsgById")
+//    @ApiOperation(value = "根据id给指定医生发送消息")
+//    public String sendMsg(@RequestParam String id) throws IOException {
+//        String token = this.getToken();
+//        String s = doctorService.sendMsg(token, id);
+//        return s;
+////        String token = redisUtils.get("token");
+////        String msg;
+////        if (token == null) {
+////            // 获取新的token
+//////            this.getToken(corpid, corpsecret);
+////            String tokenNew = redisUtils.get("token");
+////            log.info("token不存在，已重新生成");
+////            msg = doctorService.sendMsg(tokenNew,id);
+////        } else {
+////            log.info("token存在，发送消息");
+////            msg = doctorService.sendMsg(token,id);
+////        }
+////        return msg;
+//    }
 
     /**
      * 给每个医生发送自己的信息统计
@@ -128,7 +135,7 @@ public class DoctorController {
         doctorService.sendAllMsg();
     }
 
-    @RequestMapping("/accessUser")
+    @GetMapping("/accessUser")
     @ApiOperation("访问用户权限")
     public void accessUser(HttpServletResponse response) throws IOException {
         String redirect_uri = URLEncoder.encode(url, "UTF-8");
