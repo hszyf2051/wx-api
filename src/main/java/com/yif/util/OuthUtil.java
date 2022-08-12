@@ -28,7 +28,7 @@ public class OuthUtil {
                 "&response_type=code" +
                 "&scope=SCOPE" +
                 "&state=123#wechat_redirect";
-        return wxUrl.replace("APPID", corpid).replace("REDIRECT_URI", redirect_uri).replace("SCOPE", "snsapi_userinfo");
+        return wxUrl.replace("APPID", corpid).replace("REDIRECT_URI", redirect_uri).replace("SCOPE", "snsapi_base");
     }
 }
 

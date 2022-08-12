@@ -2,8 +2,6 @@ D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\entity\Doctor.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\service\IDoctorService.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\config\CrossFilter.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\config\MyApplicationRunner.java
-D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\service\IUserService.java
-D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\controller\UserController.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\service\Impl\DoctorServiceImpl.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\util\HttpUtil.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\param\RightMsg.java
@@ -12,8 +10,6 @@ D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\param\WrongMsg.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\util\OuthUtil.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\util\RedisUtils.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\ApiApplication.java
-D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\entity\User.java
-D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\service\Impl\UserServiceImpl.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\controller\DoctorController.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\util\AuthUtil.java
 D:\Yif\idea_workspace\wx-api\src\main\java\com\yif\mapper\DoctorMapper.java

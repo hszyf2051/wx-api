@@ -63,6 +63,7 @@ public class DoctorController {
     public ModelAndView callBack(HttpServletRequest request, HttpServletResponse response,Model model)throws Exception {
         String code = request.getParameter("code");
         String sessionUserId = (String)request.getSession().getAttribute("userId");
+        log.info("----------"+ sessionUserId);
         String outh2Url = outhUtil.getOuth2Url();
         if(StringUtils.isEmpty(sessionUserId)){
             // code 不为0，用户成功授权登录
@@ -85,13 +86,16 @@ public class DoctorController {
                     return new ModelAndView("index");
                 }else{
                     // 医生不存在
+                    log.info("该医生不存在！"+ outh2Url);
                     response.sendRedirect(outh2Url);
-                    log.info("该医生不存在！");
+
                 }
             } else {
                 // code 失效
+                log.info("code不存在"+ outh2Url);
+
                 response.sendRedirect(outh2Url);
-                log.info("code失效");
+
             }
         }else{
             // 获取医生信息

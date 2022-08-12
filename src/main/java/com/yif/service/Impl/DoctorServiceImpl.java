@@ -2,15 +2,12 @@ package com.yif.service.Impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
-import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.ReadSheet;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yif.entity.Doctor;
-import com.yif.param.RightMsg;
 import com.yif.service.IDoctorService;
 import com.yif.util.HttpUtil;
 import com.yif.util.OuthUtil;
@@ -45,6 +42,9 @@ public class DoctorServiceImpl implements IDoctorService {
     @Value("${doctor.corpid}")
     private String appid;
 
+    @Value("${doctor.agentid}")
+    private String agentid;
+
     private  Map<String, Object> doctorData;
 
     @Autowired
@@ -56,7 +56,6 @@ public class DoctorServiceImpl implements IDoctorService {
     @PostConstruct
     void initDocetorData(){
         doctorData = this.readDoctors2();
-        log.info(String.valueOf(doctorData));
     }
 
 
@@ -174,12 +173,13 @@ public class DoctorServiceImpl implements IDoctorService {
         arrayList.add(articlesMap);
         paramMap.put("touser",id);
         paramMap.put("msgtype", "news");
-        paramMap.put("agentid", 2);
+        paramMap.put("agentid", agentid);
         paramMap.put("news", newsMap);
         newsMap.put("articles", arrayList);
-
+        log.info(String.valueOf("newsMap:"+newsMap));
         String jsonObject = String.valueOf(new JSONObject(paramMap));
-        String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
+       String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
+       log.info("微信返回:{}",httpPost);
         return httpPost;
     }
     /**
@@ -249,18 +249,19 @@ public class DoctorServiceImpl implements IDoctorService {
                 }
                 log.info(msg);
             } catch (Exception e) {
-                log.info("error 失败了");
+                log.error("服务器出错了 (ó﹏ò｡)", e);
             }
         }
         // 将成功发送人的数据写入Excel
-        String rightFilename = "C:/Users/admin/Desktop/Api/sendMsgSuccess.xlsx";
-        ExcelWriter excelWriterRight = EasyExcel.write(rightFilename, RightMsg.class).build();
-        WriteSheet writeSheetRight = EasyExcel.writerSheet("发送成功医生信息").build();
-        excelWriterRight.write(rightMsg,writeSheetRight);
-        excelWriterRight.finish();
-        log.info(String.valueOf(rightMsg));
-        log.info(String.valueOf(wrongMsg));
+//        String rightFilename = "C:/Users/admin/Desktop/Api/sendMsgSuccess.xlsx";
+//        ExcelWriter excelWriterRight = EasyExcel.write(rightFilename, RightMsg.class).build();
+//        WriteSheet writeSheetRight = EasyExcel.writerSheet("发送成功医生信息").build();
+//        excelWriterRight.write(rightMsg,writeSheetRight);
+//        excelWriterRight.finish();
+//        log.info(String.valueOf(rightMsg));
+//        log.info(String.valueOf(wrongMsg));
     }
+
 
 
     /**
@@ -301,6 +302,5 @@ public class DoctorServiceImpl implements IDoctorService {
         String now = new SimpleDateFormat("M月d日 ").format(newDate);
         return now;
     }
-
 
 }
