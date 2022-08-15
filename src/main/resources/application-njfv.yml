@@ -33,6 +33,9 @@ spring:
 
 doctor:
   fileName: "/usr/fomey/医师节数据样例.xlsx"
+  wrongFile: "/usr/fomey/reload/医师节数据样例.xlsx"
+  rightMsgUrl: "/usr/fomey/sendMsgSuccess.xlsx"
+  wrongMsgUrl: "/usr/fomey/sendMsgWrong.xlsx"
   corpid: ww7f157924993acd3d
   corpsecret: wA7npUhy-zepnV2eodRrYcBSP5JAz2VxIfA2-Gico5M
   # 授权后重定向的回调链接地址，请使用urlencode对链接进行处理

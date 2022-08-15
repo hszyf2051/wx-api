@@ -80,7 +80,7 @@ public class Doctor {
     /**
      * 手术时长最长时间
      */
-    @ExcelProperty(value = "手术时长最长时间")
+    @ExcelProperty(value = "手术时长最长时间（分钟）")
     private String maxTimeOperations;
 
     /**

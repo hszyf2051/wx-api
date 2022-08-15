@@ -14,53 +14,58 @@
 		</script>
 	</head>
 	<body>
-		<div id="dowebok" th:each="doctor : ${doctors}">
-			<div class="section active">
-				<div class="page02-bg01"></div>
+<!--	th:if="${doctor.visits}>0"-->
+		<div id="dowebok" th:each="doctor : ${doctors}" >
+			<!--style="display: none"-->
+			<div class="section active" >
+				<div  class="page02-bg01"></div>
 				<div class="page02-bg02 animated"><img src="../static/images/page02.png" th:src="@{images/page02.png}"/></div>
 				<div class="page02-text">
-					<div class="page02-title animated" >
+					<div class="page02-title animated" th:if="${doctor.visits}>0">
 						<p>一年来，您共诊治了<span class="timer" th:data-to="${doctor.visits}" data-speed="2000"></span>位门诊患者！</p>
 						<p><span th:text="${doctor.maxVisitDate}"></span></p>
 						<p>是您近一年单日看诊人次最多的日子，</p>
-						<p>共诊治了<span class="timer" th:data-to="${doctor.maxVisit}" data-speed="2000"></span>位门诊患者！</p>
+						<p th:if="${doctor.maxVisit!=null &amp;&amp; doctor.maxVisit!=0}">共诊治了<span class="timer" th:data-to="${doctor.maxVisit}" data-speed="2000"></span>位门诊患者！</p>
 						<p>再忙您也要注意身体！</p>
 					</div>	
 				</div>
 			</div>
-			<div class="section">
+<!--			th:if="${doctor.healing}>0"-->
+			<div class="section" >
 				<div class="page03-bg01"></div>
 				<div class="page03-bg02 animated"><img src="../static/images/page03.png" th:src="@{/images/page03.png}"/></div>
 				<div class="page03-text">
-					<div class="page03-title animated" >
-						<p>一年来，您共参与治疗了<span class="timer" th:data-to="${doctor.visits}" data-speed="2000"></span>位住院患者,</p>
-						<p th:if="${doctor.operation!=0}" >您成功为患者施行了<span class="timer" th:data-to="${doctor.operation}" data-speed="2000"></span>次手术，</p>
-						<p th:if="${doctor.timeOperations!=null}">您在手术台上总共战斗了<span class="timer" th:data-to="${doctor.timeOperations}" data-speed="2000"></span>个小时！</p>
-						<p th:if="${doctor.partner!=null}"><span th:text="${doctor.partner}"></span>是您最坚实最默契的搭档。</p>
+					<div class="page03-title animated" th:if="${doctor.healing>0}">
+						<p th:if="${doctor.healing!=null &amp;&amp; doctor.healing!=0} ">一年来，您共参与治疗了<span class="timer" th:data-to="${doctor.healing}" data-speed="2000"></span>位住院患者,</p>
+						<p th:if="${doctor.operation!=0 &amp;&amp; doctor.operation!=null}" >您成功为患者施行了<span class="timer" th:data-to="${doctor.operation}" data-speed="2000"></span>次手术，</p>
+						<p th:if="${doctor.timeOperations!=null &amp;&amp; doctor.timeOperations!=0}">您在手术台上总共战斗了<span class="timer" th:data-to="${doctor.timeOperations}" data-speed="2000"></span>个小时！</p>
+						<p th:if="${doctor.partner!=null &amp;&amp; doctor.partner!=0}"><span th:text="${doctor.partner}"></span>是您最坚实最默契的搭档。</p>
 					</div>
 				</div>
-				<div class="page03-bottom animated">
+				<div class="page03-bottom animated" th:if="${doctor.healing>0}">
 					<p>数据来源于病案首页</p>
 					<p>手术次数统计包括: 手术医师, Ⅰ助, Ⅱ助</p>
 				</div>
 			</div>
+
 			<div class="section" style="background: #e6f7f9;">
 				<div class="page04-bg01 animated"></div>
 				<div class="page04-text">
-					<div class="page04-title animated" th:each="doctor : ${doctors}">
-						<p th:if="${doctor.maxDate!=null}"><h5 th:text="${doctor.maxDate}"></h5></p>
-						<p th:if="${doctor.maxTimeOperations!=null}">您完成了一年来耗时最长的一台手术，</p>
-						<p th:if="${doctor.maxTimeOperations!=null}"><span class="timer" th:data-to="${doctor.maxTimeOperations}" data-speed="2000"></span>分钟映照着您疲惫又欣慰的身影！</p>
-						<p th:if="${doctor.latestTimeOperations!=null}">您最晚<span th:text="${doctor.latestTimeOperations}"></span>才从手术台上离开！</p>
+					<div class="page04-title animated" th:if="${doctor.maxDate!=null &amp;&amp; doctor.maxDate!=0}">
+						<p th:if="${doctor.maxDate!=null &amp;&amp; doctor.maxDate!=0}"><h5 th:text="${doctor.maxDate}"></h5></p>
+						<p th:if="${doctor.maxDate!=null &amp;&amp; doctor.maxDate!=0}">您完成了一年来耗时最长的一台手术，</p>
+						<p th:if="${doctor.maxTimeOperations!=null &amp;&amp; doctor.maxTimeOperations!=0}"><span class="timer" th:data-to="${doctor.maxTimeOperations}" data-speed="2000"></span>分钟映照着您疲惫又欣慰的身影！</p>
+						<p th:if="${doctor.latestTimeOperations!=null &amp;&amp; doctor.latestTimeOperations!=0}">您最晚<span th:text="${doctor.latestTimeOperations}"></span></br>才从手术台上离开！</p>
 						<p>妙手仁心紧握刀，</p>
 						<p>情牵生命抢分毫！</p>
-					</div>	
+					</div>
 				</div>
-				<div class="page03-bottom animated">
+				<div class="page03-bottom animated" th:if="${doctor.maxDate!=null &amp;&amp; doctor.maxDate!=0}">
 					<p>数据来源于病案首页</p>
 					<p>手术次数统计包括: 手术医师, Ⅰ助, Ⅱ助</p>
 				</div>
 			</div>
+
 			<div class="section">
 				<div class="page05-bg01"></div>
 				<div class="page05-bg02">
@@ -68,20 +73,22 @@
 						<img src="../static/images/page05-2.png" th:src="@{/images/page05-2.png}"/>
 					</div>
 					<div class="page05-text animated">
-						<div class="page05-title">
+						<div class="page05-title" th:if="${doctor.birthDate!=null &amp;&amp; doctor.birthDate!=0}">
 							<p><span th:text="${doctor.birthDate}"></span>是您的生日，</p>
 							<p>这一天您一如既往，</p>
 							<p th:if="${doctor.birthVisits!=null &amp;&amp; doctor.birthVisits!=0}">诊治了<span class="timer" th:data-to="${doctor.birthVisits}" data-speed="2000"></span>位患者，</p>
+							<p th:if="${doctor.birthOperations!=null &amp;&amp; doctor.birthOperations!=0}">完成了<span class="timer" th:data-to="${doctor.birthOperations}" data-speed="2000"></span>台手术。</p>
 							<p>不曾辜负每一份热情与希望！</p>
 						</div>
 					</div>
 				</div>
 			</div>
+
 			<div class="section">
 				<div class="page01-bg01"></div>
 				<div class="page01-bg02 animated"></div>
 				<div class="page01-bottom">
-					<div class="page01-title animated" >
+					<div class="page01-title animated" th:if="${doctor.onlineVisits!=null &amp;&amp; doctor.onlineVisits!=0}">
 						<p>一年来，</p>
 						<p th:if="${doctor.onlineVisits!=null &amp;&amp; doctor.onlineVisits!=0}">您共接诊线上诊疗<span class="timer" th:data-to="${doctor.onlineVisits}" data-speed="2000"></span>人次，</p>
 						<p>感谢您让冰冷的屏幕更有温度！</p>

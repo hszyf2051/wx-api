@@ -44,4 +44,14 @@ public interface IDoctorService {
     void sendAllMsg()  throws UnsupportedEncodingException;
 
     Doctor findDoctor(String id) throws ParseException;
+
+    Map<String, Object> editorExcelData();
+
+    Map<String, Object> reload();
+
+    /**
+     * 重新发送消息
+     * @throws IOException
+     */
+    void reloadSend() throws IOException;
 }

@@ -78,9 +78,9 @@ public class DoctorController {
                 JSONObject jsonObject = JSON.parseObject(httpPost);
                 String userId = jsonObject.getString("UserId");
                 // 校验医生是否存在
-                if(doctorService.findDoctor(userId)!=null){
+                Doctor doctor = doctorService.findDoctor((String) userId);
+                if(doctor!=null){
                     // 获取医生信息
-                    Doctor doctor = doctorService.findDoctor((String) userId);
                     request.getSession().setAttribute("userId", userId);
                     model.addAttribute("doctors", doctor);
                     return new ModelAndView("index");
@@ -167,5 +167,17 @@ public class DoctorController {
     @ApiOperation(value = "给每个医生发送自己的信息统计")
     public void sendMsgAll() throws IOException{
         doctorService.sendAllMsg();
+    }
+
+    @GetMapping("/reloadExcelData")
+    @ApiOperation(value = "回调数据")
+    public Map<String, Object> reloadExcelData() {
+        return doctorService.reload();
+    }
+
+    @GetMapping("/reloadSend")
+    @ApiOperation(value = "给每个医生发送自己的信息统计")
+    public void reloadSend() throws IOException{
+        doctorService.reloadSend();
     }
 }
