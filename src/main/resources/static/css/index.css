@@ -225,6 +225,7 @@ ul:after{
 	z-index: 10;
 }
 .page02-title{
+	transition-delay: 2s;
 	opacity: 0;
     -webkit-transform: translateY(-50px);
     -ms-transform: translateY(-50px);
@@ -274,9 +275,9 @@ ul:after{
 	left: 0;
 	z-index: 4;
 	opacity: 0;
-    -webkit-transform: translateY(-50px);
-    -ms-transform: translateY(-50px);
-    transform: translateY(-50px);
+    -webkit-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    transform: translateY(50px);
 }
 .page03-bg02 img{
 	display: block;
@@ -313,9 +314,9 @@ ul:after{
 	bottom: 0;
 	z-index: 10;
 	opacity: 0;
-    -webkit-transform: translateY(-50px);
-    -ms-transform: translateY(-50px);
-    transform: translateY(-50px);
+    -webkit-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    transform: translateY(50px);
 }
 .page03-bottom p{
 	font-size: 1.875rem;
@@ -392,9 +393,9 @@ ul:after{
 	position: relative;
 	z-index: 20;
 	opacity: 0;
-    -webkit-transform: translateY(-50px);
-    -ms-transform: translateY(-50px);
-    transform: translateY(-50px);
+    -webkit-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    transform: translateY(50px);
 }
 .page05-line img{
 	display: block;
@@ -409,9 +410,10 @@ ul:after{
 	margin-top: -1rem;
 	padding: 5.625rem 5rem 4rem;
 	text-align: center;
-	-webkit-transform: perspective(400px) rotateX(90deg);
-    transform: perspective(400px) rotateX(90deg);
-    opacity: 0;
+	opacity: 0;
+    -webkit-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    transform: translateY(50px);
 }
  
 .page05-title h5{
@@ -454,9 +456,9 @@ ul:after{
 	width: 100%;
 	bottom: 0;
 	opacity: 0;
-    -webkit-transform: translateY(-50px);
-    -ms-transform: translateY(-50px);
-    transform: translateY(-50px);
+    -webkit-transform: translateY(50px);
+    -ms-transform: translateY(50px);
+    transform: translateY(50px);
 }
 .page06-icon02{
 	width: 0;
@@ -538,6 +540,171 @@ ul:after{
     transform: translateY(-50px);
 }
 
+/*.active .page02-title{
+	transition-delay: 2s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page02-bg02{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateX(0px);
+    -ms-transform: translateX(0px);
+    transform: translateX(0px);
+}*/
+.active .page03-title{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page03-bg02{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page03-bottom{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page04-title{
+	transition-delay: 2s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page04-bg01{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	transform: scale(1, 1);
+    -o-transform: scale(1, 1);
+    -ms-transform: scale(1, 1);
+    -moz-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    opacity: 1;
+}
+.active .page05-line{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page05-text{
+	transition-delay: 2s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page01-bg02{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateX(0px);
+    -ms-transform: translateX(0px);
+    transform: translateX(0px);
+}
+.active .page01-title{
+	transition-delay: 1.5s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+
+.active .page06-icon01{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page06-title>p{
+	transition-delay: 1s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page06-icon02{
+	transition-delay: 2s;
+	transition-duration: 1s;
+	width: 9.4375rem;
+}
+.active .page06-icon03{
+	transition-delay: 2s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page06-icon04{
+	transition-delay: 2s;
+	transition-duration: 1s;
+	width: 16.875rem;
+}
+.active .page06-title h5 p span:nth-child(1){
+	transition-delay: 1.4s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page06-title h5 p span:nth-child(2){
+	transition-delay: 1.7s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page06-title h5 p span:nth-child(3){
+	transition-delay: 2s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page06-title h5 p span:nth-child(4){
+	transition-delay: 2.3s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
+.active .page06-title a{
+	transition-delay: 2.6s;
+	transition-duration: 1s;
+	opacity: 1;
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    transform: translateY(0px);
+}
 
 
 @keyframes jTdown{

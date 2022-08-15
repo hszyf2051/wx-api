@@ -63,7 +63,7 @@ public class DoctorController {
     public ModelAndView callBack(HttpServletRequest request, HttpServletResponse response,Model model)throws Exception {
         String code = request.getParameter("code");
         String sessionUserId = (String)request.getSession().getAttribute("userId");
-        log.info("----------"+ sessionUserId);
+        log.info("-----"+ sessionUserId);
         String outh2Url = outhUtil.getOuth2Url();
         if(StringUtils.isEmpty(sessionUserId)){
             // code 不为0，用户成功授权登录
@@ -113,7 +113,7 @@ public class DoctorController {
      */
     @GetMapping("/getDoctors")
     public ModelAndView getDoctors(Model model) {
-        List<Doctor> doctors = doctorService.readDoctors();
+        Map<String, Object> doctors = doctorService.readDoctors();
         model.addAttribute("doctors",doctors);
         return new ModelAndView("index");
     }
@@ -140,8 +140,9 @@ public class DoctorController {
     @ApiOperation(value = "根据id查找医生")
     public ModelAndView findDoctor(Model model,@RequestParam String id) throws ParseException {
         Doctor doctor = doctorService.findDoctor(id);
+        log.info("根据id查询到的医生："+doctor);
         model.addAttribute("doctors",doctor);
-        return new ModelAndView ("index");
+        return new ModelAndView ("content");
     }
 
     @GetMapping("/redirect")

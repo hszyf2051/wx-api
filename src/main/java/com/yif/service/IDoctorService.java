@@ -24,7 +24,7 @@ public interface IDoctorService {
      * 获取医生信息
      * @return
      */
-    public List<Doctor> readDoctors();
+    public Map<String, Object> readDoctors();
 
     public Map<String, Object> readDoctors2();
 

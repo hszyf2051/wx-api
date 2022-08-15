@@ -46,4 +46,4 @@ doctor:
   agentid: 2
   jpgUrl: http://ai.foemy.com/doctor/images/doctor.jpg
   # 动态监测修改的文件夹目录
-  file: "C:/Users/admin/Desktop/Api/"
+#  file: "C:/Users/admin/Desktop/Api/"

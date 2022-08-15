@@ -10,12 +10,10 @@ import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.yif.Listener.FileListener;
 import com.yif.entity.Doctor;
 import com.yif.param.RightMsg;
 import com.yif.param.WrongMsg;
 import com.yif.service.IDoctorService;
-import com.yif.util.FileMonitor;
 import com.yif.util.HttpUtil;
 import com.yif.util.OuthUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -60,10 +58,16 @@ public class DoctorServiceImpl implements IDoctorService {
     private String fileName;
 
     /**
-     * 动态监测修改的文件夹目录
+     * 需要重新发送的医生数据
      */
-    @Value("${doctor.file}")
-    private String file;
+    @Value("${doctor.wrongFile}")
+    private String wrongFile;
+
+//    /**
+//     * 动态监测修改的文件夹目录
+//     */
+//    @Value("${doctor.file}")
+//    private String file;
 
     /**
      * 发送消息成功url
@@ -92,22 +96,22 @@ public class DoctorServiceImpl implements IDoctorService {
     public void initDocetorData(){
         doctorData = this.readDoctors2();
         Set<Map.Entry<String, Object>> entries = doctorData.entrySet();
-//        log.info("初始化数据："+String.valueOf(entries));
+        log.info("初始化数据："+String.valueOf(entries));
     }
 
-    /**
-     * 监控Excel文件变化
-     * @throws Exception
-     */
-    @PostConstruct
-    public void Monitor() throws Exception{
-        try {
-            this.FileRunner();
-        } catch (Exception e) {
-            log.info("监控异常");
-            throw new RuntimeException(e);
-        }
-    }
+//    /**
+//     * 监控Excel文件变化
+//     * @throws Exception
+//     */
+//    @PostConstruct
+//    public void Monitor() throws Exception{
+//        try {
+//            this.FileRunner();
+//        } catch (Exception e) {
+//            log.info("监控异常");
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
 
@@ -129,16 +133,40 @@ public class DoctorServiceImpl implements IDoctorService {
     }
 
 
+    /**
+     * 重新获取的医生数据
+     * @return
+     */
     @Override
-    public List<Doctor> readDoctors() {
+    public Map<String, Object> readDoctors() {
+//        // 创建一个数据格式来承装读取到数据
+//        Class<Doctor> head = Doctor.class;
+//        // 创建ExcelReader对象
+//        List<Doctor> doctorList = new ArrayList<>();
+//        ExcelReader excelReader = EasyExcel.read(fileName, head, new AnalysisEventListener<Doctor>() {
+//            @Override
+//            public void invoke(Doctor doctor, AnalysisContext analysisContext) {
+//                doctorList.add(doctor);
+//            }
+//
+//            @Override
+//            public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+//            }
+//        }).build();
+//        // 创建sheet对象,并读取Excel的第1个sheet(下标从0开始)
+//        ReadSheet readSheet = EasyExcel.readSheet(0).build();
+//        excelReader.read(readSheet);
+//        // 关闭流操作，在读取文件时会创建临时文件,如果不关闭,磁盘爆掉
+//        excelReader.finish();
+//        return doctorList;
         // 创建一个数据格式来承装读取到数据
         Class<Doctor> head = Doctor.class;
         // 创建ExcelReader对象
-        List<Doctor> doctorList = new ArrayList<>();
-        ExcelReader excelReader = EasyExcel.read(fileName, head, new AnalysisEventListener<Doctor>() {
+        Map<String, Object> doctorMap = new HashMap<>();
+        ExcelReader excelReader = EasyExcel.read(wrongFile, head, new AnalysisEventListener<Doctor>() {
             @Override
             public void invoke(Doctor doctor, AnalysisContext analysisContext) {
-                doctorList.add(doctor);
+                doctorMap.put(doctor.getId(),doctor);
             }
 
             @Override
@@ -150,7 +178,7 @@ public class DoctorServiceImpl implements IDoctorService {
         excelReader.read(readSheet);
         // 关闭流操作，在读取文件时会创建临时文件,如果不关闭,磁盘爆掉
         excelReader.finish();
-        return doctorList;
+        return doctorMap;
     }
 
     /**
@@ -225,7 +253,7 @@ public class DoctorServiceImpl implements IDoctorService {
 //        log.info(String.valueOf("newsMap:"+newsMap));
         String jsonObject = String.valueOf(new JSONObject(paramMap));
        String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
-//       log.info("微信返回:{}",httpPost);
+       log.info("微信返回:{}",httpPost);
         return httpPost;
     }
     /**
@@ -317,8 +345,8 @@ public class DoctorServiceImpl implements IDoctorService {
         WriteSheet writeSheetWrong = EasyExcel.writerSheet("发送失败医生id").build();
         excelWriterWrong.write(wrongMsg,writeSheetWrong);
         excelWriterWrong.finish();
-//        log.info(String.valueOf(rightMsg));
-//        log.info(String.valueOf(wrongMsg));
+        log.info(String.valueOf(rightMsg));
+        log.info(String.valueOf(wrongMsg));
     }
 
 
@@ -362,11 +390,11 @@ public class DoctorServiceImpl implements IDoctorService {
         return now;
     }
 
-    public void FileRunner() throws Exception{
-        FileMonitor fileMonitor = new FileMonitor(1000);
-        fileMonitor.monitor(file, new FileListener());
-        fileMonitor.start();
-    }
+//    public void FileRunner() throws Exception{
+//        FileMonitor fileMonitor = new FileMonitor(1000);
+//        fileMonitor.monitor(file, new FileListener());
+//        fileMonitor.start();
+//    }
 
     /**
      * 回调Excel数据
@@ -398,30 +426,35 @@ public class DoctorServiceImpl implements IDoctorService {
         //获取token
         String token = this.getToken(appid, corpsecret);
         // 遍历拿到所有医生的id 取出发送人
-        List<RightMsg> rightMsg = new ArrayList<>();
-        List<WrongMsg> wrongMsg = new ArrayList<>();
-        for (String doctorId : doctorData.keySet()) {
-            try {
-                // 单个消息  判断成功失败
-                String msg = this.sendMsg(token, doctorId);
-                // 转化json对象
-                JSONObject jsonMsg = JSONObject.parseObject(msg);
-                String code = jsonMsg.getString("errcode");
-                if (StringUtils.equals(code,"0")) {
-                    // 成功  记录成功人KEY  记录一下成功文件   内存属性发送标记
-                    RightMsg rightData = new RightMsg();
-                    rightData.setId(doctorId);
-                    rightMsg.add(rightData);
-                } else {
-                    // 失败  记录失败人KEY  记录一下失败文件
-                    WrongMsg wrongData = new WrongMsg();
-                    wrongData.setId(doctorId);
-                    wrongMsg.add(wrongData);
-                }
-            } catch (Exception e) {
-                log.error("服务器出错了 (ó﹏ò｡)", e);
-            }
+        List<Doctor> doctorList = new ArrayList<>();
+        Map<String, Object> stringObjectMap = readDoctors();
+        // 获取map中所有的key值
+        Set<Map.Entry<String, Object>> entries = stringObjectMap.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+
         }
+//        for (String doctorId : doctorData.keySet()) {
+//            try {
+//                // 单个消息  判断成功失败
+//                String msg = this.sendMsg(token, doctorId);
+//                // 转化json对象
+//                JSONObject jsonMsg = JSONObject.parseObject(msg);
+//                String code = jsonMsg.getString("errcode");
+//                if (StringUtils.equals(code,"0")) {
+//                    // 成功  记录成功人KEY  记录一下成功文件   内存属性发送标记
+//                    RightMsg rightData = new RightMsg();
+//                    rightData.setId(doctorId);
+//                    rightMsg.add(rightData);
+//                } else {
+//                    // 失败  记录失败人KEY  记录一下失败文件
+//                    WrongMsg wrongData = new WrongMsg();
+//                    wrongData.setId(doctorId);
+//                    wrongMsg.add(wrongData);
+//                }
+//            } catch (Exception e) {
+//                log.error("服务器出错了 (ó﹏ò｡)", e);
+//            }
+//        }
     }
 
 }
