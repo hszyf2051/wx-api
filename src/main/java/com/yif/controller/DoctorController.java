@@ -63,7 +63,6 @@ public class DoctorController {
     public ModelAndView callBack(HttpServletRequest request, HttpServletResponse response,Model model)throws Exception {
         String code = request.getParameter("code");
         String sessionUserId = (String)request.getSession().getAttribute("userId");
-        log.info("-----"+ sessionUserId);
         String outh2Url = outhUtil.getOuth2Url();
         if(StringUtils.isEmpty(sessionUserId)){
             // code 不为0，用户成功授权登录
@@ -170,6 +169,10 @@ public class DoctorController {
         doctorService.sendAllMsg();
     }
 
+    /**
+     * 回调数据，重新刷新excel数据
+     * @return
+     */
     @GetMapping("/reloadExcelData")
     @ApiOperation(value = "回调数据")
     public Map<String, Object> reloadExcelData() {
@@ -177,8 +180,14 @@ public class DoctorController {
     }
 
     @GetMapping("/reloadSend")
-    @ApiOperation(value = "给每个医生发送自己的信息统计")
+    @ApiOperation(value = "给修改后的医生发送自己的信息统计")
     public void reloadSend() throws IOException{
         doctorService.reloadSend();
+    }
+
+    @GetMapping("/reloadGet")
+    @ApiOperation(value = "获取修改后的医生信息统计")
+    public Map<String, Object> reloadGet() throws IOException{
+        return doctorService.readDoctors();
     }
 }

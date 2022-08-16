@@ -35,7 +35,7 @@
 				<div class="page03-bg02 animated"><img src="../static/images/page03.png" th:src="@{/images/page03.png}"/></div>
 				<div class="page03-text">
 					<div class="page03-title animated" th:if="${doctor.healing!=null &amp;&amp; doctor.healing!=0}">
-						<p th:if="${doctor.healing!=null &amp;&amp; doctor.healing!=0}">一年来，您共参与治疗了<span class="timer" id="page02Data" th:data-to="${doctor.healing}" data-speed="2000"></span>位住院患者,</p>
+						<p th:if="${doctor.healing!=null &amp;&amp; doctor.healing!=0}">一年来，您共参与治疗了<span class="timer" id="page02Data" th:data-to="${doctor.healing}" data-speed="2000"></span>位住院患者<font style="font-color:#333" th:if="${doctor.operation!=0 &amp;&amp; doctor.operation!=null}">,</font></p>
 						<p th:if="${doctor.operation!=0 &amp;&amp; doctor.operation!=null}">您成功为患者施行了<span class="timer" th:data-to="${doctor.operation}" data-speed="2000"></span>次手术，</p>
 						<p th:if="${doctor.timeOperations!=null &amp;&amp; doctor.timeOperations!=0}">您在手术台上总共战斗了<span class="timer" th:data-to="${doctor.timeOperations}" data-speed="2000"></span>个小时！</p>
 						<p th:if="${doctor.partner!=null &amp;&amp; doctor.partner!=0}"><span th:text="${doctor.partner}"></span>是您最坚实最默契的搭档。</p>
@@ -43,7 +43,8 @@
 				</div>
 				<div class="page03-bottom animated" th:if="${doctor.healing>0}">
 					<p>数据来源于病案首页</p>
-					<p>手术次数统计包括: 手术医师, Ⅰ助, Ⅱ助</p>
+					<p>手术次数统计包括：手术医师、一助、二助、</p>
+					<p>麻醉医师</p>
 				</div>
 			</div>
 			<div class="section" style="background: #e6f7f9;" id="page03">
@@ -60,7 +61,8 @@
 				</div>
 				<div class="page03-bottom animated" id="page04" th:if="${doctor.maxDate!=null &amp;&amp; doctor.maxDate!=0}">
 					<p>数据来源于病案首页</p>
-					<p>手术次数统计包括: 手术医师, Ⅰ助, Ⅱ助</p>
+					<p>手术次数统计包括：手术医师、一助、二助、</p>
+					<p>麻醉医师</p>
 				</div>
 			</div>
 			<div class="section" id="page05">
@@ -103,7 +105,7 @@
 				</div>
 				<div class="page06-text">
 					<div class="page06-title animated" >
-						<p class="animated">医者之路，艰辛亦荣耀；初心常在，无悔即人生。感谢您这一年辛苦无悔地付出，向守护在岗位的您，致以最诚挚的节日问候！</p>
+						<p class="animated">医者之路，艰辛亦荣耀；初心常在，无悔即人生。感谢您这一年辛苦无悔地付出，向坚守在岗位的您，致以最诚挚的节日问候！</p>
 						<h5><p><span class="animated">谢</span><span class="animated">谢</span><span class="animated">您</span><span class="animated">！</span></p></h5>
 						<a class="animated" href="index2.html" th:href="@{/findDoctor(id=${doctor.id})}">再次回顾</a>
 					</div>
@@ -118,10 +120,8 @@
 	<script src="../static/js/timepeople.js" th:src="@{/js/timepeople.js}" type="text/javascript" charset="utf-8"></script>
 	<script>
 		$(function(){
-			// var num1 = $('#page01').find('.timer').eq(0).text();
 			var page01Data = $('#page01Data').data('to');
 			var page02Data = $('#page02Data').data('to');
-		    // var num2 = $('#page02').find('.timer').eq(1).text();
 			var page03Data = $('#page03Data').text();
 			var page05Data = $('#page05Data').text();
 			var page06Data = $('#page06Data').data('to');

@@ -22,12 +22,6 @@ public class Doctor {
     private String id;
 
     /**
-     * 身份
-     */
-    @ExcelProperty(value = "身份")
-    private String identity;
-
-    /**
      * 就诊量
      */
     @ExcelProperty(value = "门诊就诊量")
@@ -86,7 +80,7 @@ public class Doctor {
     /**
      * 手术最长结束时间
      */
-    @DateTimeFormat("yyyy年MM月dd日HHmm")
+    @DateTimeFormat("yyyy年MM月dd日HH:mm:ss")
     @ExcelProperty(value = "手术最长结束时间")
     private String latestTimeOperations;
 

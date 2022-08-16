@@ -15,10 +15,8 @@ import com.yif.param.RightMsg;
 import com.yif.param.WrongMsg;
 import com.yif.service.IDoctorService;
 import com.yif.util.HttpUtil;
-import com.yif.util.OuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -81,13 +79,15 @@ public class DoctorServiceImpl implements IDoctorService {
     @Value("${doctor.wrongMsgUrl}")
     private String wrongMsgUrl;
 
-
+    /**
+     * 缓存数据
+     */
     private Map<String, Object> doctorData;
 
-//    private
-
-    @Autowired
-    private OuthUtil outhUtil;
+    /**
+     * 重载数据
+     */
+    private Map<String, Object> reloadData;
 
     /**
      * 开启项目读取excel数据
@@ -96,7 +96,16 @@ public class DoctorServiceImpl implements IDoctorService {
     public void initDocetorData(){
         doctorData = this.readDoctors2();
         Set<Map.Entry<String, Object>> entries = doctorData.entrySet();
-        log.info("初始化数据："+String.valueOf(entries));
+//        log.info(String.valueOf(doctorData));
+    }
+
+    /**
+     * 获取reload后的数据
+     */
+    @PostConstruct
+    public void initReloadData(){
+        reloadData = this.readDoctors();
+//        log.info(String.valueOf(reloadData));
     }
 
 //    /**
@@ -139,26 +148,6 @@ public class DoctorServiceImpl implements IDoctorService {
      */
     @Override
     public Map<String, Object> readDoctors() {
-//        // 创建一个数据格式来承装读取到数据
-//        Class<Doctor> head = Doctor.class;
-//        // 创建ExcelReader对象
-//        List<Doctor> doctorList = new ArrayList<>();
-//        ExcelReader excelReader = EasyExcel.read(fileName, head, new AnalysisEventListener<Doctor>() {
-//            @Override
-//            public void invoke(Doctor doctor, AnalysisContext analysisContext) {
-//                doctorList.add(doctor);
-//            }
-//
-//            @Override
-//            public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-//            }
-//        }).build();
-//        // 创建sheet对象,并读取Excel的第1个sheet(下标从0开始)
-//        ReadSheet readSheet = EasyExcel.readSheet(0).build();
-//        excelReader.read(readSheet);
-//        // 关闭流操作，在读取文件时会创建临时文件,如果不关闭,磁盘爆掉
-//        excelReader.finish();
-//        return doctorList;
         // 创建一个数据格式来承装读取到数据
         Class<Doctor> head = Doctor.class;
         // 创建ExcelReader对象
@@ -178,6 +167,7 @@ public class DoctorServiceImpl implements IDoctorService {
         excelReader.read(readSheet);
         // 关闭流操作，在读取文件时会创建临时文件,如果不关闭,磁盘爆掉
         excelReader.finish();
+        reloadData = doctorMap;
         return doctorMap;
     }
 
@@ -239,9 +229,9 @@ public class DoctorServiceImpl implements IDoctorService {
         // 发送图文的api中articles的类型是数组
         ArrayList<Object> arrayList = new ArrayList<>();
         Map articlesMap = new HashMap();
-        articlesMap.put("title","医生节活动");
+        articlesMap.put("title","医师节祝福");
         articlesMap.put("description","医者仁心，大爱无疆。亲爱的医生，向您致以最崇高的敬意与感谢，您辛苦了！祝您节日快乐！");
-         articlesMap.put("url",url);
+        articlesMap.put("url",url);
 
         articlesMap.put("picurl",jpgurl);
         arrayList.add(articlesMap);
@@ -252,8 +242,8 @@ public class DoctorServiceImpl implements IDoctorService {
         newsMap.put("articles", arrayList);
 //        log.info(String.valueOf("newsMap:"+newsMap));
         String jsonObject = String.valueOf(new JSONObject(paramMap));
-       String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
-       log.info("微信返回:{}",httpPost);
+        String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
+        log.info("微信返回:{}",httpPost);
         return httpPost;
     }
     /**
@@ -271,7 +261,6 @@ public class DoctorServiceImpl implements IDoctorService {
                     doctor.setMaxTimeOperations(doctor.getMaxTimeOperations().replace("分钟",""));
                 }
                 // 格式手术时长最长日期
-//                if (doctor.getMaxDate()!=null)
                 if (!StringUtils.isEmpty(doctor.getMaxDate()))
                 {
                     if (doctor.getMaxDate().contains("/")) {
@@ -280,8 +269,7 @@ public class DoctorServiceImpl implements IDoctorService {
                     }
                 }
                 // 格式手术最长结束时间
-//                if (doctor.getLatestTimeOperations()!=null)
-                    if (!StringUtils.isEmpty(doctor.getLatestTimeOperations())){
+                if (!StringUtils.isEmpty(doctor.getLatestTimeOperations())){
                     if (doctor.getLatestTimeOperations().contains("/")) {
                         String latestTimeOperations = doctor.getLatestTimeOperations();
                         doctor.setLatestTimeOperations(this.formatDate2(latestTimeOperations));
@@ -333,6 +321,13 @@ public class DoctorServiceImpl implements IDoctorService {
                 log.error("服务器出错了 (ó﹏ò｡)", e);
             }
         }
+        // 移除发送失败的doctorId
+        for (WrongMsg msg : wrongMsg) {
+            doctorData.remove(msg.getId());
+        }
+        log.info(String.valueOf(doctorData));
+//        log.info();
+//        doctorData.remove();
         // 将成功发送人的数据写入Excel
         String rightFilename = rightMsgUrl;
         ExcelWriter excelWriterRight = EasyExcel.write(rightFilename, RightMsg.class).build();
@@ -357,11 +352,15 @@ public class DoctorServiceImpl implements IDoctorService {
      * @return
      * @throws ParseException
      */
-    public String formatDate(String date) throws ParseException {
-        String replaceDate = date.replaceAll("/", "-");
-        Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(replaceDate);
-        String now = new SimpleDateFormat("yyyy年M月d日").format(newDate);
-        return now;
+    public String formatDate(String date) {
+        try {
+            String replaceDate = date.replaceAll("/", "-");
+            Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(replaceDate);
+            String now = new SimpleDateFormat("yyyy年M月d日").format(newDate);
+            return now;
+        } catch (ParseException e) {
+            return date;
+        }
     }
 
     /**
@@ -370,11 +369,15 @@ public class DoctorServiceImpl implements IDoctorService {
      * @return
      * @throws ParseException
      */
-    public String formatDate2(String date) throws ParseException {
-        String replaceDate = date.replaceAll("/", "-");
-        Date newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(replaceDate);
-        String now = new SimpleDateFormat("yyyy年M月d日 HH:mm:ss").format(newDate);
-        return now;
+    public String formatDate2(String date)  {
+        try {
+            String replaceDate = date.replaceAll("/", "-");
+            Date newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(replaceDate);
+            String now = new SimpleDateFormat("yyyy年M月d日 HH:mm:ss").format(newDate);
+            return now;
+        } catch (ParseException e) {
+            return date;
+        }
     }
 
     /**
@@ -383,11 +386,15 @@ public class DoctorServiceImpl implements IDoctorService {
      * @return
      * @throws ParseException
      */
-    public String formatDate3(String date) throws ParseException {
-        String replaceDate = date.replaceAll("/", "-");
-        Date newDate = new SimpleDateFormat("MM-dd").parse(replaceDate);
-        String now = new SimpleDateFormat("M月d日 ").format(newDate);
-        return now;
+    public String formatDate3(String date) {
+        try {
+            String replaceDate = date.replaceAll("/", "-");
+            Date newDate = new SimpleDateFormat("MM-dd").parse(replaceDate);
+            String now = new SimpleDateFormat("M月d日 ").format(newDate);
+            return now;
+        } catch (ParseException e) {
+            return date;
+        }
     }
 
 //    public void FileRunner() throws Exception{
@@ -421,17 +428,39 @@ public class DoctorServiceImpl implements IDoctorService {
      * 重新发送数据给医生
      * @throws IOException
      */
+    //        private Map<String, Object> doctorData;
     @Override
     public void reloadSend() throws IOException {
         //获取token
         String token = this.getToken(appid, corpsecret);
         // 遍历拿到所有医生的id 取出发送人
-        List<Doctor> doctorList = new ArrayList<>();
-        Map<String, Object> stringObjectMap = readDoctors();
+        List<String> doctorListId = new ArrayList<>();
+        for (Map.Entry<String, Object> stringObjectEntry : reloadData.entrySet()) {
+            // 重新将Map中数据转化为对象
+            Doctor reloadDoctor = (Doctor) stringObjectEntry.getValue();
+            // 遍历后的id
+            String reloadDoctorId = reloadDoctor.getId();
+            // 如果reloadDoctorId与缓存中的数据不一样
+            // 转化为字符串类型进行判断，避免转换类型错误
+            String reloadJson = JSON.toJSONString(doctorData.get(reloadDoctorId));
+            if (StringUtils.equals("null",reloadJson)) {
+//                log.info("该id不存在,加入缓存",reloadDoctorId);
+                doctorData.put(reloadDoctorId,reloadDoctor);
+            } else {
+                log.info("已经存在的id："+String.valueOf(reloadDoctorId));
+                // 去除已经存在的id
+                doctorListId.add(reloadDoctorId);
+            }
+        }
+        for (String id : doctorListId) {
+            reloadData.remove(id);
+        }
+//        log.info(String.valueOf(reloadData));
+//        log.info("修改后的缓存数据"+String.valueOf(doctorData));
         // 获取map中所有的key值
-        Set<Map.Entry<String, Object>> entries = stringObjectMap.entrySet();
-        for (Map.Entry<String, Object> entry : entries) {
-
+        Set<String> stringObject = reloadData.keySet();
+        for (String reloadId : stringObject) {
+            String msg = this.sendMsg(token, reloadId);
         }
 //        for (String doctorId : doctorData.keySet()) {
 //            try {
