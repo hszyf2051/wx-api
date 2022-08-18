@@ -1,0 +1,49 @@
+server:
+  port: 80
+  servlet:
+    context-path: /doctor
+spring:
+  datasource:
+    username: root
+    password: hszyf2051
+    url: jdbc:mysql://localhost:3306/exam?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+    servlet:
+      content-type:
+        text/html
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 20000
+  security:
+    user:
+      name: yif
+      password: 1234
+
+
+doctor:
+  fileName: "/usr/fomey/医师节数据样例.xlsx"
+  wrongFile: "/usr/fomey/reload/医师节数据样例.xlsx"
+  rightMsgUrl: "/usr/fomey/sendMsgSuccess.xlsx"
+  wrongMsgUrl: "/usr/fomey/sendMsgWrong.xlsx"
+  sendSuccessExcel: "/usr/fomey/发送成功医生数据.xlsx"
+  reloadWrongUrl: "/usr/fomey/reload/sendMsgWrong.xlsx"
+  corpid: ww7f157924993acd3d
+  corpsecret: wA7npUhy-zepnV2eodRrYcBSP5JAz2VxIfA2-Gico5M
+  # 授权后重定向的回调链接地址，请使用urlencode对链接进行处理
+  redirect_uri: http://ysj.njfybjy.com/doctor/callBack
+  scope: snsapi_base
+  #  snsapi_base：静默授权，可获取成员的基础信息（UserId与DeviceId）；
+  #  snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息。
+  agentid: 1000007
+  jpgUrl: http://ysj.njfybjy.com/doctor/images/doctor2.jpg
