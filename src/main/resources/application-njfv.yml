@@ -36,6 +36,8 @@ doctor:
   wrongFile: "/usr/fomey/reload/医师节数据样例.xlsx"
   rightMsgUrl: "/usr/fomey/sendMsgSuccess.xlsx"
   wrongMsgUrl: "/usr/fomey/sendMsgWrong.xlsx"
+  sendSuccessExcel: "/usr/fomey/发送成功医生数据.xlsx"
+  reloadWrongUrl: "/usr/fomey/reload/sendMsgWrong.xlsx"
   corpid: ww7f157924993acd3d
   corpsecret: wA7npUhy-zepnV2eodRrYcBSP5JAz2VxIfA2-Gico5M
   # 授权后重定向的回调链接地址，请使用urlencode对链接进行处理
@@ -44,4 +46,4 @@ doctor:
   #  snsapi_base：静默授权，可获取成员的基础信息（UserId与DeviceId）；
   #  snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息。
   agentid: 1000007
-  jpgUrl: http://ysj.njfybjy.com/doctor/images/doctor.jpg
+  jpgUrl: http://ysj.njfybjy.com/doctor/images/doctor2.jpg

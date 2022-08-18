@@ -106,18 +106,6 @@ public class DoctorController {
     }
 
     /**
-     * 查找所有医生
-     * @param model
-     * @return
-     */
-    @GetMapping("/getDoctors")
-    public ModelAndView getDoctors(Model model) {
-        Map<String, Object> doctors = doctorService.readDoctors();
-        model.addAttribute("doctors",doctors);
-        return new ModelAndView("index");
-    }
-
-    /**
      * 找到所有医生信息
      * @param model
      * @return
@@ -179,6 +167,10 @@ public class DoctorController {
         return doctorService.reload();
     }
 
+    /**
+     * 重新发送excel数据
+     * @throws IOException
+     */
     @GetMapping("/reloadSend")
     @ApiOperation(value = "给修改后的医生发送自己的信息统计")
     public void reloadSend() throws IOException{
@@ -189,5 +181,15 @@ public class DoctorController {
     @ApiOperation(value = "获取修改后的医生信息统计")
     public Map<String, Object> reloadGet() throws IOException{
         return doctorService.readDoctors();
+    }
+
+    /**
+     * 获取缓存中发送成功的医生信息统计
+     * @throws IOException
+     */
+    @GetMapping("/getSuccessExcel")
+    @ApiOperation(value = "获取缓存中发送成功的医生信息统计")
+    public void GetSuccessExcel() throws IOException{
+        doctorService.getSuccessExcel();
     }
 }

@@ -55,4 +55,8 @@ public interface IDoctorService {
      */
     void reloadSend() throws IOException;
 
+    /**
+     * 获取缓存中发送成功的医生信息统计
+     */
+    void getSuccessExcel();
 }

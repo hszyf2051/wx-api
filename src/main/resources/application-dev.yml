@@ -35,6 +35,8 @@ doctor:
   wrongFile: "C:/Users/admin/Desktop/Api/reload/医师节数据样例.xlsx"
   rightMsgUrl: "C:/Users/admin/Desktop/Api/sendMsgSuccess.xlsx"
   wrongMsgUrl: "C:/Users/admin/Desktop/Api/sendMsgWrong.xlsx"
+  sendSuccessExcel: "C:/Users/admin/Desktop/Api/发送成功医生数据.xlsx"
+  reloadWrongUrl: "C:/Users/admin/Desktop/Api/reload/sendMsgWrong.xlsx"
   corpid: wx1199888fb72190c9
   corpsecret: oUCu-DxjBNMgkT7ltCqSos7SvYOeV32beRK0SXmLjcs
   # 授权后重定向的回调链接地址，请使用urlencode对链接进行处理
@@ -44,6 +46,6 @@ doctor:
   #  snsapi_base：静默授权，可获取成员的基础信息（UserId与DeviceId）；
   #  snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息。
   agentid: 2
-  jpgUrl: http://ai.foemy.com/doctor/images/doctor.jpg
+  jpgUrl: http://ai.foemy.com/doctor/images/doctor2.jpg
   # 动态监测修改的文件夹目录
 #  file: "C:/Users/admin/Desktop/Api/"

@@ -80,6 +80,18 @@ public class DoctorServiceImpl implements IDoctorService {
     private String wrongMsgUrl;
 
     /**
+     * reload发送消息失败url
+     */
+    @Value("${doctor.reloadWrongUrl}")
+    private String reloadWrongUrl;
+
+    /**
+     * 发送成功医生信息Excel
+     */
+    @Value("${doctor.sendSuccessExcel}")
+    private String sendSuccessExcel;
+
+    /**
      * 缓存数据
      */
     private Map<String, Object> doctorData;
@@ -167,6 +179,7 @@ public class DoctorServiceImpl implements IDoctorService {
         excelReader.read(readSheet);
         // 关闭流操作，在读取文件时会创建临时文件,如果不关闭,磁盘爆掉
         excelReader.finish();
+        // 将reloadData放入缓存中
         reloadData = doctorMap;
         return doctorMap;
     }
@@ -230,9 +243,8 @@ public class DoctorServiceImpl implements IDoctorService {
         ArrayList<Object> arrayList = new ArrayList<>();
         Map articlesMap = new HashMap();
         articlesMap.put("title","医师节祝福");
-        articlesMap.put("description","医者仁心，大爱无疆。亲爱的医生，向您致以最崇高的敬意与感谢，您辛苦了！祝您节日快乐！");
+        articlesMap.put("description","医者仁心，大爱无疆。亲爱的医生，向您致以最崇高的敬意与感谢。您辛苦了！祝您节日快乐！");
         articlesMap.put("url",url);
-
         articlesMap.put("picurl",jpgurl);
         arrayList.add(articlesMap);
         paramMap.put("touser",id);
@@ -240,7 +252,6 @@ public class DoctorServiceImpl implements IDoctorService {
         paramMap.put("agentid", agentid);
         paramMap.put("news", newsMap);
         newsMap.put("articles", arrayList);
-//        log.info(String.valueOf("newsMap:"+newsMap));
         String jsonObject = String.valueOf(new JSONObject(paramMap));
         String httpPost = HttpUtil.httpPost("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token, (Map<String, Object>) null, jsonObject);
         log.info("微信返回:{}",httpPost);
@@ -263,24 +274,42 @@ public class DoctorServiceImpl implements IDoctorService {
                 // 格式手术时长最长日期
                 if (!StringUtils.isEmpty(doctor.getMaxDate()))
                 {
-                    if (doctor.getMaxDate().contains("/")) {
-                        String maxDate = doctor.getMaxDate();
-                        doctor.setMaxDate(this.formatDate(maxDate));
+                    try {
+                        if (doctor.getMaxDate().contains("/")) {
+                            String maxDate = doctor.getMaxDate();
+                            doctor.setMaxDate(this.formatDate(maxDate));
+                        } else {
+                            doctor.setMaxDate(doctor.getMaxDate());
+                        }
+                    } catch (Exception e) {
+                        doctor.setMaxDate(doctor.getMaxDate());
                     }
                 }
                 // 格式手术最长结束时间
-                if (!StringUtils.isEmpty(doctor.getLatestTimeOperations())){
-                    if (doctor.getLatestTimeOperations().contains("/")) {
-                        String latestTimeOperations = doctor.getLatestTimeOperations();
-                        doctor.setLatestTimeOperations(this.formatDate2(latestTimeOperations));
+                try {
+                    if (!StringUtils.isEmpty(doctor.getLatestTimeOperations())){
+                        if (doctor.getLatestTimeOperations().contains("/")) {
+                            String latestTimeOperations = doctor.getLatestTimeOperations();
+                            doctor.setLatestTimeOperations(this.formatDate2(latestTimeOperations));
+                        } else {
+                            doctor.setLatestTimeOperations(doctor.getLatestTimeOperations());
+                        }
                     }
+                } catch (Exception e) {
+                    doctor.setLatestTimeOperations(doctor.getLatestTimeOperations());
                 }
                 // 格式医生生日
-                if (doctor.getBirthDate()!=null) {
-                    if (doctor.getBirthDate().contains("-")) {
-                        String birthDate = doctor.getBirthDate();
-                        doctor.setBirthDate(this.formatDate3(birthDate));
+                try {
+                    if (doctor.getBirthDate()!=null) {
+                        if (doctor.getBirthDate().contains("-")) {
+                            String birthDate = doctor.getBirthDate();
+                            doctor.setBirthDate(this.formatDate3(birthDate));
+                        } else {
+                            doctor.setBirthDate(doctor.getBirthDate());
+                        }
                     }
+                } catch (Exception e) {
+                    doctor.setBirthDate(doctor.getBirthDate());
                 }
                 BeanUtils.copyProperties(doctor,doctorNew);
             }
@@ -325,9 +354,9 @@ public class DoctorServiceImpl implements IDoctorService {
         for (WrongMsg msg : wrongMsg) {
             doctorData.remove(msg.getId());
         }
-        log.info(String.valueOf(doctorData));
+//        log.info(String.valueOf(doctorData));
 //        log.info();
-//        doctorData.remove();
+
         // 将成功发送人的数据写入Excel
         String rightFilename = rightMsgUrl;
         ExcelWriter excelWriterRight = EasyExcel.write(rightFilename, RightMsg.class).build();
@@ -420,7 +449,7 @@ public class DoctorServiceImpl implements IDoctorService {
         // 重新刷新缓存
         doctorData = this.readDoctors2();
         Set<Map.Entry<String, Object>> entries = doctorData.entrySet();
-        log.info("修改后数据："+String.valueOf(doctorData));
+//        log.info("修改后数据："+String.valueOf(doctorData));
         return doctorData;
     }
 
@@ -428,62 +457,92 @@ public class DoctorServiceImpl implements IDoctorService {
      * 重新发送数据给医生
      * @throws IOException
      */
-    //        private Map<String, Object> doctorData;
     @Override
     public void reloadSend() throws IOException {
         //获取token
         String token = this.getToken(appid, corpsecret);
         // 遍历拿到所有医生的id 取出发送人
+        List<RightMsg> rightMsg = new ArrayList<>();
+        List<WrongMsg> wrongMsg = new ArrayList<>();
+        // 遍历拿到所有医生的id 取出发送人
         List<String> doctorListId = new ArrayList<>();
-        for (Map.Entry<String, Object> stringObjectEntry : reloadData.entrySet()) {
-            // 重新将Map中数据转化为对象
-            Doctor reloadDoctor = (Doctor) stringObjectEntry.getValue();
-            // 遍历后的id
-            String reloadDoctorId = reloadDoctor.getId();
-            // 如果reloadDoctorId与缓存中的数据不一样
-            // 转化为字符串类型进行判断，避免转换类型错误
+        // reloadData中的key值,即对应的id
+        Set<String> stringObject = reloadData.keySet();
+        for (String reloadDoctorId : stringObject) {
             String reloadJson = JSON.toJSONString(doctorData.get(reloadDoctorId));
             if (StringUtils.equals("null",reloadJson)) {
-//                log.info("该id不存在,加入缓存",reloadDoctorId);
-                doctorData.put(reloadDoctorId,reloadDoctor);
+                // id不存在
+                log.info("id不存在,为新数据："+String.valueOf(reloadDoctorId));
             } else {
                 log.info("已经存在的id："+String.valueOf(reloadDoctorId));
                 // 去除已经存在的id
                 doctorListId.add(reloadDoctorId);
             }
         }
+
         for (String id : doctorListId) {
+            // 移除缓存中的数据
             reloadData.remove(id);
         }
-//        log.info(String.valueOf(reloadData));
-//        log.info("修改后的缓存数据"+String.valueOf(doctorData));
-        // 获取map中所有的key值
-        Set<String> stringObject = reloadData.keySet();
-        for (String reloadId : stringObject) {
-            String msg = this.sendMsg(token, reloadId);
+        // 发送消息部分
+        for (Map.Entry<String, Object> stringObjectEntry : reloadData.entrySet()) {
+            // 重新将Map中数据转化为对象
+            Doctor reloadDoctor = (Doctor) stringObjectEntry.getValue();
+            // 遍历后的id
+            String reloadDoctorId = reloadDoctor.getId();
+            // 根据此时的id发送消息
+            try {
+                String msg = this.sendMsg(token, reloadDoctorId);
+                log.info(msg);
+                // 转化json对象
+                JSONObject jsonMsg = JSONObject.parseObject(msg);
+                String code = jsonMsg.getString("errcode");
+                if (StringUtils.equals(code,"0")) {
+                    // 成功  记录成功人KEY  记录一下成功文件   内存属性发送标记
+                    RightMsg rightData = new RightMsg();
+                    rightData.setId(reloadDoctorId);
+                    rightMsg.add(rightData);
+                    // 添加进入缓存
+                    doctorData.put(reloadDoctorId,reloadDoctor);
+                } else {
+                    // 失败  记录失败人KEY  记录一下失败文件
+                    WrongMsg wrongData = new WrongMsg();
+                    wrongData.setId(reloadDoctorId);
+                    wrongMsg.add(wrongData);
+                }
+            } catch (Exception e) {
+                log.error("服务器出错了 (ó﹏ò｡)", e);
+            }
         }
-//        for (String doctorId : doctorData.keySet()) {
-//            try {
-//                // 单个消息  判断成功失败
-//                String msg = this.sendMsg(token, doctorId);
-//                // 转化json对象
-//                JSONObject jsonMsg = JSONObject.parseObject(msg);
-//                String code = jsonMsg.getString("errcode");
-//                if (StringUtils.equals(code,"0")) {
-//                    // 成功  记录成功人KEY  记录一下成功文件   内存属性发送标记
-//                    RightMsg rightData = new RightMsg();
-//                    rightData.setId(doctorId);
-//                    rightMsg.add(rightData);
-//                } else {
-//                    // 失败  记录失败人KEY  记录一下失败文件
-//                    WrongMsg wrongData = new WrongMsg();
-//                    wrongData.setId(doctorId);
-//                    wrongMsg.add(wrongData);
-//                }
-//            } catch (Exception e) {
-//                log.error("服务器出错了 (ó﹏ò｡)", e);
-//            }
-//        }
+//        log.info("再次成功发送人的信息："+ String.valueOf(rightMsg));
+//        log.info("再次失败发送人的id："+ String.valueOf(wrongMsg));
+        // 将再次失败发送的id写入Excel
+        String wrongFilename = reloadWrongUrl;
+        ExcelWriter excelWriterWrong = EasyExcel.write(wrongFilename, WrongMsg.class).build();
+        WriteSheet writeSheetWrong = EasyExcel.writerSheet("reload发送失败医生id").build();
+        excelWriterWrong.write(wrongMsg,writeSheetWrong);
+        excelWriterWrong.finish();
+        log.info(String.valueOf(rightMsg));
+        log.info(String.valueOf(wrongMsg));
     }
 
+    /**
+     * 获取成功发送的医生信息放入Excel中
+     */
+    @Override
+    public void getSuccessExcel() {
+        List<Doctor> doctorList = new ArrayList<>();
+        for (Map.Entry<String, Object> stringObjectEntry : doctorData.entrySet()) {
+            // 重新将Map中数据转化为对象
+            Doctor doctor = (Doctor) stringObjectEntry.getValue();
+            doctorList.add(doctor);
+        }
+        log.info("发送成功的医生信息{}"+String.valueOf(doctorList));
+        // 将成功发送人的数据写入Excel
+        String sendSuccessExcelUrl = sendSuccessExcel;
+        ExcelWriter excelWriterRight = EasyExcel.write(sendSuccessExcelUrl, Doctor.class).build();
+        WriteSheet writeSheetRight = EasyExcel.writerSheet("发送成功医生信息").build();
+        excelWriterRight.write(doctorList,writeSheetRight);
+        excelWriterRight.finish();
+    }
 }
