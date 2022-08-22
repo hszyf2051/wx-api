@@ -271,6 +271,20 @@ public class DoctorServiceImpl implements IDoctorService {
                 if(!StringUtils.isEmpty(doctor.getMaxTimeOperations())){
                     doctor.setMaxTimeOperations(doctor.getMaxTimeOperations().replace("分钟",""));
                 }
+                // 格式看诊最多日期
+                if (!StringUtils.isEmpty(doctor.getMaxVisitDate()))
+                {
+                    try {
+                        if (doctor.getMaxVisitDate().contains("/")) {
+                            String maxVisitDate = doctor.getMaxVisitDate();
+                            doctor.setMaxVisitDate(this.formatDate(maxVisitDate));
+                        } else {
+                            doctor.setMaxVisitDate(doctor.getMaxVisitDate());
+                        }
+                    } catch (Exception e) {
+                        doctor.setMaxVisitDate(doctor.getMaxVisitDate());
+                    }
+                }
                 // 格式手术时长最长日期
                 if (!StringUtils.isEmpty(doctor.getMaxDate()))
                 {
