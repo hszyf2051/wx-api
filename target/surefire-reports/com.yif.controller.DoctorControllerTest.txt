@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: com.yif.controller.DoctorControllerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.072 s <<< FAILURE! - in com.yif.controller.DoctorControllerTest
+SelectOne  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'doctorController': Unsatisfied dependency expressed through field 'doctorService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'doctorServiceImpl': Invocation of init method failed; nested exception is com.alibaba.excel.exception.ExcelCommonException: Convert excel format exception.You can try specifying the 'excelType' yourself
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'doctorServiceImpl': Invocation of init method failed; nested exception is com.alibaba.excel.exception.ExcelCommonException: Convert excel format exception.You can try specifying the 'excelType' yourself
+Caused by: com.alibaba.excel.exception.ExcelCommonException: Convert excel format exception.You can try specifying the 'excelType' yourself
+Caused by: com.alibaba.excel.exception.ExcelAnalysisException: File D:\usr\fomey\医师节数据样例.xlsx not exists.
+
